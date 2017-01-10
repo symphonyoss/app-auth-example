@@ -1,0 +1,24 @@
+server:
+  port: 8081
+
+webhook:
+  # API Key.  Must be provided as part of metadata when installing app on the pod.  Pod will provide this API key
+  # back to this app when calling the webhook to update pod info.  Clearly, this should not be hardcoded in a
+  # confif
+  apiKey: super-secret-api-key-1234
+
+symphony:
+  client:
+
+    # Keystore file that contains PKCS#12 / PFX format certificate used to authenticate this application to the
+    # Symphony pod using client certificates.  Subject in cert must equal app ID.  The cert must be trusted by the
+    # Symphony pod, either by uploading the public part of the cert itself or the public signing cert for this cert.
+    keystoreFilename: /usr/local/atlas/symphony/env/localhost/certs/developerTestApp.p12
+
+    # default Java keystore password
+    keystorePassword: changeit
+
+    # This default value is the cacarts file distributed with the Java JDK which contains most common root certs
+    truststoreFilename: /Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/lib/security/cacerts
+
+
