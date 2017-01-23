@@ -1,0 +1,92 @@
+{
+	"variables": [],
+	"info": {
+		"name": "App Auth",
+		"_postman_id": "72de9572-a9a8-e8bb-8ae6-8e47b91183f1",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Pod Info",
+			"request": {
+				"url": "localhost:8080/podInfo",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "API-Key",
+						"value": "super-secret-api-key-1234",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"podId\" : \"company-id\",\n  \"podHost\" : \"https://company.symphony.com:8444\",\n  \"agentHost\" : \"https://agent.company.com\"\n}"
+				},
+				"description": "foo"
+			},
+			"response": []
+		},
+		{
+			"name": "Authenticate",
+			"request": {
+				"url": "localhost:8080/authenticate",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "company-id"
+				},
+				"description": "foo"
+			},
+			"response": []
+		},
+		{
+			"name": "Vaildate Tokens",
+			"request": {
+				"url": "localhost:8080/validateTokens",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"podId\" : \"company-id\",\n\t\"symphonyToken\" : \"0341052533bb68e04ff8cff30122c26d2ac274d49542ed5c2cebd6e9762d59bd8fe219b697887acbf5e2aedaef7a0ed3a4bdb2d1c9d25c67c2bd07d417c231c6\",\n\t\"appToken\" : \"fcbe4f01-d0ae-488c-8ca6-fb6f4b1579b1\"\n}"
+				},
+				"description": "Validates tokens.  Replace values with new values."
+			},
+			"response": []
+		},
+		{
+			"name": "Get JWT (From Pod)",
+			"request": {
+				"url": "https://company.symphony.com/appstore/v1/user/jwt?appId=developerTestApp&appToken=642aad5e-f6f5-4711-a774-f19438674c14",
+				"method": "GET",
+				"header": [
+					{
+						"key": "skey",
+						"value": "068717f5db43459cd0b124857bab611e26944af3ca738bfed07bd17724bd100b35064e41fe5105eae31a667280d3fe589d4ec8563ab39e7ad13e8cd6693fea5a",
+						"description": ""
+					},
+					{
+						"key": "x-symphony-csrf-token",
+						"value": "a9ae13c481f65fa65152a7e31127ec204666a4162bcf798695072e5b654d45e56a51110733d4536065e49a1df9494a8e8802ef59d72d172976a1998a60eba61e",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": "Needs skey and anti-csrf token headers.  Values should be copied from cookies"
+			},
+			"response": []
+		}
+	]
+}

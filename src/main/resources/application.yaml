@@ -1,10 +1,15 @@
 server:
-  port: 8081
+  port: 8443
+  ssl:
+    key-store: conf/keystore.p12
+    key-store-password: changeit
+    keyStoreType: PKCS12
+    keyAlias: tomcat
 
 webhook:
   # API Key.  Must be provided as part of metadata when installing app on the pod.  Pod will provide this API key
   # back to this app when calling the webhook to update pod info.  Clearly, this should not be hardcoded in a
-  # confif
+  # config
   apiKey: super-secret-api-key-1234
 
 symphony:
@@ -18,7 +23,7 @@ symphony:
     # default Java keystore password
     keystorePassword: changeit
 
-    # This default value is the cacarts file distributed with the Java JDK which contains most common root certs
+    # This default value is the cacerts file distributed with the Java JDK which contains most common root certs
     truststoreFilename: /Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/lib/security/cacerts
 
 

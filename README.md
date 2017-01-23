@@ -1,7 +1,8 @@
+##App Authentication Sample Application
 This is an example back end application that provides an implementation of the [App Authentication Flow](TBD) used by
 Symphony to authenticate javascript applications (and users) that use the Symphony Extension API.
 
-The application is build using Spring Boot.  A Feign client is used to make calls the Symphony REST API.  The client
+The application is built upon Spring Boot.  A Feign client is used to make calls the Symphony REST API.  The client
 is configured to use client certificate authentication.
 
 There are examples for:
@@ -24,3 +25,26 @@ Not included is any example of user reconciliation.  Typically, if the user in t
 end server would send a response that causes the front end app to display a form which allows the user to input
 their app specific user ID (and password).  These values are returned to the back end and if validated, a mapping
 between Symphony user ID and app user ID is persisted.  This is a one-time operation.
+
+
+####Requirements
+* Java 8+
+* Maven 3.0+
+
+####Build
+
+```
+mvn clean install
+```
+
+####Run
+
+You can either build an executable jar and run that
+```
+mvn package
+java -jar target/app-auth-example-0.0.1-SNAPSHOT.jar
+```
+or you can use Maven to run the application directly
+```
+mvn spring-boot:run
+```
