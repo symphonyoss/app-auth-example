@@ -21,11 +21,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 /**
- * Configuration to define a CORS filter to enable "bundle" support (developer mode) required because the bundle.json
- * file is hosted in this application but is being loaded by the SFE Client which is hosted by on the pod (which likely
- * is a different server.
+ * Configuration to define a CORS filter which adds CORS header to the bundle.json file which is used to enable
+ * developer mode for this applications This is required because the bundle.json file is hosted in this application but
+ * is being loaded by the SFE Client which is hosted by on the pod which (probably) is a different server.
  *
- * Created by Dan Nathanson on 1/23/17.
+ * @author Dan Nathanson
  */
 @Configuration
 public class CorsFilterConfig {

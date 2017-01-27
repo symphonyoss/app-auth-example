@@ -13,6 +13,9 @@
 
 package com.symphony.example.authentication;
 
+import com.symphony.example.users.User;
+import com.symphony.example.users.UserNotFoundException;
+import com.symphony.example.users.UserService;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.After;
 import org.junit.Before;
@@ -25,19 +28,23 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import javax.security.auth.login.LoginException;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Unit test for AuthenticationController using RestAssured and Spring MockMvc.
- * <p>
- * Created by Dan Nathanson on 1/2/17.
+ *
+ * @author Dan Nathanson
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 public class AuthenticationControllerTest {
 
     @Mock
     private AuthenticationService authenticationService;
+    @Mock
+    private UserService userService;
 
     @Before
     public void setup() {
@@ -52,20 +59,20 @@ public class AuthenticationControllerTest {
     public void authenticate() throws Exception {
         Mockito.when(authenticationService.initiateAppAuthentication("pod-id")).thenReturn("symphony-token");
         given()
-                .standaloneSetup(new AuthenticationController(authenticationService))
+                .standaloneSetup(new AuthenticationController(authenticationService, userService))
                 .body("pod-id")
         .when()
                 .post("/authenticate")
         .then()
                 .assertThat(status().isOk())
-                .body(equalTo("symphony-token"));
+                .body(equalTo("\"symphony-token\""));
     }
 
     @Test
     public void validateTokensValid() throws Exception {
         Mockito.when(authenticationService.validateTokens("app-token", "symphony-token")).thenReturn(true);
         given()
-                .standaloneSetup(new AuthenticationController(authenticationService))
+                .standaloneSetup(new AuthenticationController(authenticationService, userService))
                 .contentType("application/json")
                 .body("{" +
                       "    \"podId\" : \"pod-id\"," +
@@ -73,17 +80,17 @@ public class AuthenticationControllerTest {
                       "    \"symphonyToken\" : \"symphony-token\"" +
                       "}")
         .when()
-                .post("/validateTokens")
+                .post("/validate-tokens")
         .then()
                 .assertThat(status().isOk())
-                .body(equalTo("Valid"));
+                .body(equalTo("\"Valid\""));
     }
 
     @Test
     public void validateTokensInvalid() throws Exception {
         Mockito.when(authenticationService.validateTokens("app-token", "symphony-token")).thenReturn(false);
         given()
-                .standaloneSetup(new AuthenticationController(authenticationService))
+                .standaloneSetup(new AuthenticationController(authenticationService, userService))
                 .contentType("application/json")
                 .body("{" +
                       "    \"podId\" : \"pod-id\"," +
@@ -91,72 +98,195 @@ public class AuthenticationControllerTest {
                       "    \"symphonyToken\" : \"symphony-token\"" +
                       "}")
         .when()
-                .post("/validateTokens")
+                .post("/validate-tokens")
         .then()
                 .assertThat(status().isUnauthorized())
-                .body(equalTo("Invalid"));
+                .body(equalTo("\"Invalid\""));
     }
 
     @Test
     public void validateTokensBadRequest() throws Exception {
         Mockito.when(authenticationService.validateTokens("app-token", "symphony-token")).thenReturn(false);
         given()
-                .standaloneSetup(new AuthenticationController(authenticationService))
+                .standaloneSetup(new AuthenticationController(authenticationService, userService))
         .when()
-                .post("/validateTokens")
+                .post("/validate-tokens")
         .then()
                 .assertThat(status().isBadRequest());
     }
 
 
     @Test
-    public void login() throws Exception {
-        Mockito.when(authenticationService.getUserFromJwt("the-jwt", "pod-id")).thenReturn("display-name");
+    public void jwtLoginMappingFound() throws Exception {
+        Mockito.when(authenticationService.getUserFromJwt("the-jwt", "pod-id")).thenReturn("symphony-username");
+        User user = new User("display-name", "app-username");
+        Mockito.when(userService.findBySymphonyId("symphony-username")).thenReturn(user);
         given()
-                .standaloneSetup(new AuthenticationController(authenticationService))
+                .standaloneSetup(new AuthenticationController(authenticationService, userService))
                 .contentType("application/json")
                 .body("{ " +
                       "    \"podId\" : \"pod-id\"," +
                       "    \"jwt\" : \"the-jwt\"" +
                       "}")
         .when()
-                .post("/login")
+                .post("/login-with-jwt")
         .then()
                 .assertThat(status().isOk())
-                .body(equalTo("Hello display-name!"));
+                .body("jwtValid", equalTo(true),
+                      "userFound", equalTo(true),
+                      "message", equalTo("Hello display-name"),
+                      "userDisplayName", equalTo("display-name"));
     }
 
     @Test
-    public void loginFailedAuth() throws Exception {
+    public void jwtLoginNoMappingFound() throws Exception {
+        Mockito.when(authenticationService.getUserFromJwt("the-jwt", "pod-id")).thenReturn("symphony-username");
+        Mockito.when(userService.findBySymphonyId("symphony-username")).thenReturn(null);
+        given()
+                .standaloneSetup(new AuthenticationController(authenticationService, userService))
+                .contentType("application/json")
+                .body("{ " +
+                      "    \"podId\" : \"pod-id\"," +
+                      "    \"jwt\" : \"the-jwt\"" +
+                      "}")
+        .when()
+                .post("/login-with-jwt")
+        .then()
+                .assertThat(status().isOk())
+                .body("jwtValid", equalTo(true),
+                      "userFound", equalTo(false),
+                      "message", equalTo("Could not find user corresponding to Symphony username from JWT"),
+                      "userDisplayName", isEmptyOrNullString());
+    }
+
+    @Test
+    public void jwtLoginFailedAuth() throws Exception {
         Mockito.when(authenticationService.getUserFromJwt("the-jwt", "pod-id"))
                .thenThrow(new LoginException("expected"));
 
         given()
-                .standaloneSetup(new AuthenticationController(authenticationService))
+                .standaloneSetup(new AuthenticationController(authenticationService, userService))
                 .contentType("application/json")
                 .body("{ " +
                       "    \"podId\" : \"pod-id\"," +
                       "    \"jwt\" : \"the-jwt\"" +
                       "}")
         .when()
-                .post("/login")
+                .post("/login-with-jwt")
         .then()
                 .assertThat(status().isUnauthorized())
-                .body(equalTo("Authentication failed"));
+                .body("jwtValid", equalTo(false),
+                      "userFound", equalTo(false),
+                      "message", equalTo("Could not parse or verify signature of JWT"),
+                      "userDisplayName", isEmptyOrNullString());
     }
 
     @Test
-    public void loginBadRequest() throws Exception {
+    public void jwtLoginBadRequest() throws Exception {
         given()
-                .standaloneSetup(new AuthenticationController(authenticationService))
+                .standaloneSetup(new AuthenticationController(authenticationService, userService))
                 .contentType("application/json")
                 .body("{ " +
                       "    \"jwt\" : \"the-jwt\"" +
                       "}")
         .when()
-                .post("/login")
+                .post("/login-with-jwt")
         .then()
                 .assertThat(status().isBadRequest())
-                .body(equalTo("Bad request"));
+                .body("jwtValid", equalTo(false),
+                      "userFound", equalTo(false),
+                      "message", equalTo("Missing JWT or pod ID in request"),
+                      "userDisplayName", isEmptyOrNullString());
     }
+
+    @Test
+    public void usernameLoginMappingFound() throws Exception {
+        Mockito.when(authenticationService.getUserFromJwt("the-jwt", "pod-id")).thenReturn("symphony-username");
+        User user = new User("display-name", "app-username");
+        Mockito.when(userService.get("app-username")).thenReturn(user);
+        given()
+                .standaloneSetup(new AuthenticationController(authenticationService, userService))
+                .contentType("application/json")
+                .body("{ " +
+                      "    \"username\" : \"app-username\"," +
+                      "    \"podId\" : \"pod-id\"," +
+                      "    \"jwt\" : \"the-jwt\"" +
+                      "}")
+                .when()
+                .post("/login-with-username")
+                .then()
+                .assertThat(status().isOk())
+                .body("jwtValid", equalTo(true),
+                      "userFound", equalTo(true),
+                      "message", equalTo("Hello display-name"),
+                      "userDisplayName", equalTo("display-name"));
+        assertThat(user.getSymphonyId()).isEqualTo("symphony-username");
+    }
+
+    @Test
+    public void usernameLoginBadRequest() throws Exception {
+        given()
+                .standaloneSetup(new AuthenticationController(authenticationService, userService))
+                .contentType("application/json")
+                .body("{ " +
+                      "    \"jwt\" : \"the-jwt\"," +
+                      "    \"podId\" : \"pod-id\"" +
+                      "}")
+                .when()
+                .post("/login-with-username")
+                .then()
+                .assertThat(status().isBadRequest())
+                .body("jwtValid", equalTo(false),
+                        "userFound", equalTo(false),
+                        "message", equalTo("Missing username, JWT or pod ID in request"),
+                        "userDisplayName", isEmptyOrNullString());
+    }
+
+    @Test
+    public void usernameLoginUserNotFound() throws Exception {
+        Mockito.when(authenticationService.getUserFromJwt("the-jwt", "pod-id")).thenReturn("symphony-username");
+        Mockito.when(userService.get("app-username")).thenThrow(new UserNotFoundException("expected"));
+        given()
+                .standaloneSetup(new AuthenticationController(authenticationService, userService))
+                .contentType("application/json")
+                .body("{ " +
+                        "    \"username\" : \"app-username\"," +
+                        "    \"podId\" : \"pod-id\"," +
+                        "    \"jwt\" : \"the-jwt\"" +
+                        "}")
+                .when()
+                .post("/login-with-username")
+                .then()
+                .assertThat(status().isUnauthorized())
+                .body("jwtValid", equalTo(false),
+                      "userFound", equalTo(false),
+                      "message", equalTo("Could not find user with username 'app-username'"),
+                      "userDisplayName", isEmptyOrNullString());
+    }
+
+    @Test
+    public void usernameLoginBadJwt() throws Exception {
+        User user = new User("display-name", "app-username");
+        Mockito.when(userService.get("app-username")).thenReturn(user);
+        Mockito.when(authenticationService.getUserFromJwt("the-jwt", "pod-id")).thenThrow(new LoginException("expected"));
+
+        given()
+                .standaloneSetup(new AuthenticationController(authenticationService, userService))
+                .contentType("application/json")
+                .body("{ " +
+                      "    \"username\" : \"app-username\"," +
+                      "    \"podId\" : \"pod-id\"," +
+                      "    \"jwt\" : \"the-jwt\"" +
+                      "}")
+                .when()
+                .post("/login-with-jwt")
+                .then()
+                .assertThat(status().isUnauthorized())
+                .body("jwtValid", equalTo(false),
+                      "userFound", equalTo(false),
+                      "message", equalTo("Could not parse or verify signature of JWT"),
+                      "userDisplayName", isEmptyOrNullString());
+    }
+
+
 }

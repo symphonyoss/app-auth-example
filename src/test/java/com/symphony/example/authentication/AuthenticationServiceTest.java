@@ -40,7 +40,7 @@ import static org.mockito.Mockito.when;
 /**
  * JUnit test for AuthenticationService.
  *
- * Created by Dan Nathanson on 1/2/17.
+ * @author Dan Nathanson
  */
 @RunWith(MockitoJUnitRunner.class)
 public class AuthenticationServiceTest {
@@ -117,7 +117,7 @@ public class AuthenticationServiceTest {
 
         String symphonyToken = authenticationService.initiateAppAuthentication("test-pod-id");
 
-        assertThat(symphonyToken).as("symphony token").isEqualTo("symphony-token");
+        assertThat(symphonyToken).as("app token").isEqualTo("app-token");
         assertThat(authenticationService.tokenCache.getIfPresent("app-token")).isEqualTo("symphony-token");
     }
 
@@ -144,7 +144,7 @@ public class AuthenticationServiceTest {
 
         String jwt = generateJwt();
         String displayName = authenticationService.getUserFromJwt(jwt, "pod-id");
-        assertThat(displayName).as("Display name").isEqualTo("John Smith");
+        assertThat(displayName).as("Symphony username").isEqualTo("symphony-username");
     }
 
     @Test

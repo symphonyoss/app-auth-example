@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 /**
  * Unit test for PodDirectory.
  *
- * Created by Dan Nathanson on 1/2/17.
+ * @author Dan Nathanson
  */
 public class PodDirectoryTest {
     private PodDirectory podDirectory;

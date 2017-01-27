@@ -31,7 +31,7 @@ import static org.mockito.Mockito.*;
 /**
  * Unit test for {@link SymphonyClientFactory}
  *
- * Created by Dan Nathanson on 1/2/17.
+ * @author Dan Nathanson
  */
 public class SymphonyClientFactoryTest {
 

@@ -30,7 +30,7 @@ import java.util.Map;
  * each AuthenticationClient.  This means that the same certificate must be imported into each pod.  This makes sense
  * since the certificate represents this application itself.
  *
- * Created by Dan Nathanson on 12/21/16.
+ * @author Dan Nathanson
  */
 public class SymphonyClientFactory {
     private Map<String, AuthenticationClient> clients = new HashMap<>();

@@ -29,7 +29,7 @@ import static org.junit.Assert.*;
 /**
  * Unit test for SecurityKeyUtils
  *
- * Created by Dan Nathanson on 1/5/17.
+ * @author Dan Nathanson
  */
 public class SecurityKeyUtilsTest {
 

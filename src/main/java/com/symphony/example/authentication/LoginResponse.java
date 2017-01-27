@@ -16,13 +16,14 @@ package com.symphony.example.authentication;
 import lombok.Data;
 
 /**
- * Token pair.
+ * Shared response message for both /login-with-jwt and /login-with-username endpoints.
  *
  * @author Dan Nathanson
  */
 @Data
-public class ValidateTokensRequest {
-    private String podId;
-    private String symphonyToken;
-    private String appToken;
+public class LoginResponse {
+    private boolean jwtValid;
+    private boolean userFound;
+    private String userDisplayName;
+    private String message;
 }

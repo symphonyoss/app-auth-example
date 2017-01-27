@@ -16,13 +16,14 @@ package com.symphony.example.authentication;
 import lombok.Data;
 
 /**
- * Token pair.
+ * Request message from authenticating a user with a JSON Web Token. Include the JWT and the ID of the pod that
+ * generated the request.
  *
  * @author Dan Nathanson
  */
 @Data
-public class ValidateTokensRequest {
+public class UsernameLoginRequest {
+    private String username;
+    private String jwt;
     private String podId;
-    private String symphonyToken;
-    private String appToken;
 }

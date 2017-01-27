@@ -10,6 +10,12 @@ Ajax.prototype = {
 
         method = (method=== undefined)?'POST':method;
 
+        contentType = contentType || "";
+
+        if (contentType.indexOf('json') !== -1) {
+            data = JSON.stringify(data);
+        }
+
         $.ajax({
             data: data,
             dataType: type,
@@ -17,19 +23,19 @@ Ajax.prototype = {
             error: this.onAjaxError.bind(this, deferred),
             success: this.onAjaxSuccess.bind(this, deferred),
             type: method,
-            url: which,
+            url: url,
             xhrFields: {
                 withCredentials: true
             }
         });
 
         return deferred.promise;
-    }
+    },
 
     onAjaxSuccess : function(deferred, response, status, xhr)
     {
         deferred.resolve(response);
-    }
+    },
 
     onAjaxError : function(deferred, jqXHR, textStatus, errorThrown)
     {

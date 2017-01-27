@@ -27,3 +27,12 @@ symphony:
     truststoreFilename: /Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/lib/security/cacerts
 
 
+# Populates the UserStore with list of users for this application
+userStore:
+  users:
+    -
+      username: "jsmith"
+      displayName: "John Smith"
+    -
+      username: "dnathanson"
+      displayName: "Dan Nathanson"

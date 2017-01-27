@@ -11,18 +11,18 @@
  * limitations under the License.
  */
 
-package com.symphony.example.authentication;
-
-import lombok.Data;
+package com.symphony.example.users;
 
 /**
- * Token pair.
+ * Exception thrown when user who is expected to be present is not found in the store.
  *
  * @author Dan Nathanson
  */
-@Data
-public class ValidateTokensRequest {
-    private String podId;
-    private String symphonyToken;
-    private String appToken;
+public class UserNotFoundException extends Exception {
+
+    public UserNotFoundException(String username) {
+        super("Could not find user with username '" + username + "'");
+    }
+
+
 }

@@ -20,7 +20,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * Configuration for the example application.  Properties are read from application.yaml and are prefixed
  * with "example".
  *
- * Created by Dan Nathanson on 12/19/16.
+ * @author Dan Nathanson
  */
 @Data
 @ConfigurationProperties(prefix = "symphony.client")

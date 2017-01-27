@@ -10,6 +10,7 @@ There are examples for:
 * Initiating authentication flow exchanging authentication tokens with the Symphony pod
 * Validating authentication tokens received from the Javascrip app
 * Logging in using signed JWT authenticated against public signing cert from Symphony pod.
+* Correlating application user with Symphony user.
 
 This is not meant to be production quality code.  Only minimal error handling code has been provided.
 

@@ -35,7 +35,7 @@ import java.util.concurrent.TimeUnit;
  * Service which handles App Authentication flow between Symphony and integrated app.  Flow is initiated by exchanging
  * two tokens between back ends over TLS with bilateral certificate authentication.
  *
- * Created by Dan Nathanson on 12/19/16.
+ * @author Dan Nathanson
  */
 @Component
 @Slf4j
@@ -71,7 +71,7 @@ public class AuthenticationService {
      * different channel (from the web app).  Pod ID comes from the Symphony Client (Front End).
      *
      * @param podId ID of Pod, supplied from Symphony Front End
-     * @return token returned from Symphony pod
+     * @return token app token
      */
     public String initiateAppAuthentication(String podId) {
         AuthenticationClient authenticationClient = symphonyClientFactory.getAuthenticationClient(podId);
@@ -83,7 +83,7 @@ public class AuthenticationService {
         String syphonyToken = authenticateResponse.getSymphonyToken();
         log.info("App Token: {}, Symphony Token: {}]", appToken, syphonyToken);
         tokenCache.put(appToken, syphonyToken);
-        return syphonyToken;
+        return appToken;
     }
 
     /**
@@ -136,7 +136,7 @@ public class AuthenticationService {
      *
      * @param jwt JSON Web Token from Symphony which includes user identification information
      * @param podId ID of pod which generated the JWT
-     * @return user's display name
+     * @return user's symphony username
      * @throws LoginException if JWT is invalid
      */
     public String getUserFromJwt(String jwt, String podId) throws LoginException {
@@ -166,6 +166,6 @@ public class AuthenticationService {
                 .getBody();
 
         Map userMap = (Map) claims.get("user");
-        return (String) userMap.get("displayName");
+        return (String) userMap.get("username");
     }
 }

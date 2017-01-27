@@ -18,7 +18,7 @@ import java.util.UUID;
 /**
  * Token generator for app tokens.  This is a simple implementation that just creates a random string.
  *
- * Created by Dan Nathanson on 1/2/17.
+ * @author Dan Nathanson
  */
 public class TokenGenerator {
 

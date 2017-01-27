@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
  * into the PodDirectory. For this implementation, the API key is just a hardcoded constant.  Real implementations
  * probably want something more elaborate, maybe a different API key for each pod.
  *
- * Created by Dan Nathanson on 12/19/16.
+ * @author Dan Nathanson
  */
 @RestController
 public class DirectoryWebhookController {
@@ -58,7 +58,9 @@ public class DirectoryWebhookController {
      * @param podInfo PodInfo object containing metadata about a pod
      * @param apiKey API Key.  Comes from HTTP Header value "API-Key"
      *
-     * @return HTTP 401 - if API key missing or invalid<br/>HTTP 400 - if PodInfo bad or missing<br/>HTTP 200 - otherwise.
+     * @return HTTP 401 - if API key missing or invalid<br/>
+     *         HTTP 400 - if PodInfo bad or missing<br/>
+     *         HTTP 200 - otherwise.
      */
     @RequestMapping(method = RequestMethod.POST, path = "/podInfo")
     public ResponseEntity updatePodInfo(@RequestBody PodInfo podInfo, @RequestHeader("API-Key") String apiKey) {

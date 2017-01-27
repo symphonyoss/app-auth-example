@@ -11,18 +11,23 @@
  * limitations under the License.
  */
 
-package com.symphony.example.authentication;
+package com.symphony.example.users;
 
 import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Token pair.
+ * In-memory user store.  This is populated from the a list in the application.yaml file.
  *
  * @author Dan Nathanson
  */
+@Component
+@ConfigurationProperties(prefix = "userStore")
 @Data
-public class ValidateTokensRequest {
-    private String podId;
-    private String symphonyToken;
-    private String appToken;
+public class UserStore {
+    private List<User> users = new ArrayList<>();
 }

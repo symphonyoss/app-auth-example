@@ -26,7 +26,7 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Unit test for {@link HttpClientBuilder}.  Very difficult to test.  We'll just ensure it doesn't blow up.
  *
- * Created by Dan Nathanson on 1/6/17.
+ * @author Dan Nathanson
  */
 public class HttpClientBuilderTest {
 

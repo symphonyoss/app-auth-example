@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Unit test for DirectoryWebhookController using RestAssured and Spring MockMvc.
  *
- * Created by Dan Nathanson on 1/2/17.
+ * @author Dan Nathanson
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 public class DirectoryWebhookControllerTest {

@@ -11,18 +11,26 @@
  * limitations under the License.
  */
 
-package com.symphony.example.authentication;
+package com.symphony.example.users;
 
 import lombok.Data;
 
 /**
- * Token pair.
+ * Represents a user of this application.
  *
  * @author Dan Nathanson
  */
 @Data
-public class ValidateTokensRequest {
-    private String podId;
-    private String symphonyToken;
-    private String appToken;
+public class User {
+    private String displayName;
+    private String username;
+    private String symphonyId;
+
+    public User() {
+    }
+
+    public User(String displayName, String username) {
+        this.displayName = displayName;
+        this.username = username;
+    }
 }

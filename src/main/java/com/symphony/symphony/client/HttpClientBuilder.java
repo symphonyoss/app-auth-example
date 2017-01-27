@@ -28,7 +28,7 @@ import java.util.Arrays;
 /**
  * Builds OkHttpClient preconfigured for client certificate authentication.
  *
- * Created by Dan Nathanson on 1/5/17.
+ * @author Dan Nathanson
  */
 public class HttpClientBuilder {
     private SymphonyClientConfiguration symphonyClientConfiguration;
