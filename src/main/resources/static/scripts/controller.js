@@ -25,7 +25,7 @@ function authenticate(response) {
 
     console.log('Response: ', response);
     // console.log('pod ID: ' + response);
-    podId = 'nexus2';
+    podId = ''+ response.pod;
 
     // /authenticate returns app token in body (only)
     return ajax.call('/authenticate', podId, 'POST', 'text/text')
@@ -54,36 +54,6 @@ function validate(response)
         }.bind(this));
 }
 
-// Once tokens have been validated and trust between javascript apps is extablished, client extentsion app can call
-// Extended User Info service to get a signed JWT that includes PII for the logged in user.  Pass this JWT to the
-// backend server to establish user's identity at the server.
-function login()
-{
-    userService = SYMPHONY.services.subscribe('extended-user-info');
-
-    if (userService) {
-        return userService.getJwt()
-            .then(function(jwt)
-            {
-                var request =
-                {
-                    jwt : jwt,
-                    podId : podId   // Must pass pod ID so that signature can be verified using certificate from pod
-                };
-
-                return ajax.call('/login-with-jwt', request, 'POST', 'application/json')
-                    .then(function(data)
-                    {
-                        console.log("Response: ", data);
-                    }.bind(this));
-
-            });
-    }
-
-    return Q.reject(new Error("Could not login"));
-
-}
-
 var userId;
 var uiService;
 var navService;
@@ -93,12 +63,7 @@ var userService;
 function register(appData) {
     return SYMPHONY.application.register(appData, ['ui', 'modules', 'applications-nav', 'extended-user-info'], ['authexample:controller'])
         .then(validate)
-        .then(login)
         .then(function(response) {
-            // We only get here if login was successful.  In this case successful login means the JWT was valid.
-            // It is possible that the Symphony user is not recognized by the application.  This is handled by
-            // displaying login form for the application which allows a mapping from Symphony user ID to application
-            // user ID to be recorded.  This only need to be done one time.
 
             uiService = SYMPHONY.services.subscribe('ui');
             navService = SYMPHONY.services.subscribe('applications-nav');
@@ -117,7 +82,7 @@ function register(appData) {
                         navService.focus("hello-nav");
                     }
 
-                    modulesService.show("app-auth", {title: "App Auth Example"}, "authexample:controller", "https://localhost:8443/app.html", {
+                    modulesService.show("app-auth", {title: "App Auth Example"}, "authexample:controller", "https://localhost.symphony.com:8443/app.html", {
                         // You must specify canFloat in the module options so that the module can be pinned
                         "canFloat": true
                     });
