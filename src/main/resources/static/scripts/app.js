@@ -77,7 +77,7 @@ function login()
 
 function setState(response) {
     if (!response.userFound) {
-        $('body').addClass('login');
+        $(document.body).addClass('login');
         $('#username').change(clearError);
         $('#submit').click(saveUser);
     } else {
@@ -117,17 +117,51 @@ function saveUser() {
         })
 }
 
+function theme(helloResponse) {
+    setTheme(helloResponse.themeV2);
+    return Q(helloResponse);
+}
+
+function focus()
+{
+    this.modulesService.focus('app-auth');
+    this.navService.focus('app-auth-nav');
+}
+
+
+function setTheme(theme)
+{
+    $(document.body).removeClass(theme.classes.join(' '));
+    $(document.body).addClass(theme.name);
+    $(document.body).addClass(theme.size);
+}
+
 function connect(helloResponse) {
     podId = '' + helloResponse.pod;
     return SYMPHONY.application.connect(appId, ['ui', 'modules', 'applications-nav', 'extended-user-info'], [])
         .then(login)
         .then(function(loginResponse) {
             return setState(loginResponse);
+
+            uiService = SYMPHONY.services.subscribe('ui');
+            navService = SYMPHONY.services.subscribe('applications-nav');
+            modulesService = SYMPHONY.services.subscribe('modules');
+
+            uiService.listen('themeChangeV2', onThemeChange);
+
+
+            focus();
+
+            $(window).on('focus', function() {
+                focus();
+            }.bind(this));
+
         })
 }
 
 // All Symphony services are namespaced with SYMPHONY
 SYMPHONY.remote.hello()
+    .then(theme)
     .then(connect)
     .fail(function(e) {
         console.log(e.stack);
