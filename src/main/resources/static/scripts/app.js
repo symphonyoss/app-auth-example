@@ -141,14 +141,13 @@ function connect(helloResponse) {
     return SYMPHONY.application.connect(appId, ['ui', 'modules', 'applications-nav', 'extended-user-info'], [])
         .then(login)
         .then(function(loginResponse) {
-            return setState(loginResponse);
+            setState(loginResponse);
 
             uiService = SYMPHONY.services.subscribe('ui');
             navService = SYMPHONY.services.subscribe('applications-nav');
             modulesService = SYMPHONY.services.subscribe('modules');
 
             uiService.listen('themeChangeV2', onThemeChange);
-
 
             focus();
 
