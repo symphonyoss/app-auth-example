@@ -90,12 +90,6 @@ function register(appData) {
                     modulesService.focus("app-auth");
                 }
             });
-
-            // Response contains user's display name
-            console.log(response);
-
-
-
         })
 }
 

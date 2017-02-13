@@ -105,9 +105,9 @@ function saveUser() {
         username: username,
         jwt: jwt,
         podId: podId
+    };
 
-    }
-    return ajax.call('/create-user', request, 'POST', 'application/json')
+    return ajax.call('/login-with-username', request, 'POST', 'application/json')
         .then(function(response) {
             return response;
         })
@@ -147,7 +147,13 @@ function connect(helloResponse) {
             navService = SYMPHONY.services.subscribe('applications-nav');
             modulesService = SYMPHONY.services.subscribe('modules');
 
-            uiService.listen('themeChangeV2', onThemeChange);
+            uiService.listen('themeChangeV2', function() {
+                SYMPHONY.remote.hello().then(function(data) {
+                    themeColor = data.themeV2.name;
+                    themeSize = data.themeV2.size;
+                    document.body.className = "symphony-external-app " + themeColor + " " + themeSize;
+                });
+            });
 
             focus();
 
