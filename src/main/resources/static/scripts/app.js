@@ -81,6 +81,7 @@ function setState(response) {
         $('#username').change(clearError);
         $('#submit').click(saveUser);
     } else {
+        $(document.body).removeClass('login');
         $('#welcome-message').text(response.message);
     }
 }
@@ -109,8 +110,9 @@ function saveUser() {
 
     return ajax.call('/login-with-username', request, 'POST', 'application/json')
         .then(function(response) {
-            return response;
-        })
+            $(document.body).removeClass('login');
+            $('#welcome-message').text(response.message);
+         })
         .fail(function(e) {
             setError('Cannot save username', username);
             return false;
