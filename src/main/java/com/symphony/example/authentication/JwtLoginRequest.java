@@ -24,5 +24,5 @@ import lombok.Data;
 @Data
 public class JwtLoginRequest {
     private String jwt;
-    private String podId;
+    private String companyId;
 }

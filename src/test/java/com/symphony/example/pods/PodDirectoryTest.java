@@ -40,9 +40,13 @@ public class PodDirectoryTest {
                 .hasMessageContaining("pod-id");
 
         PodInfo added = new PodInfo();
-        added.setPodId("pod-id");
-        added.setPodHost("pod-host");
-        added.setAgentHost("agent-host");
+        added.setCompanyId("pod-id");
+        added.setAppId("app-id");
+        PodInfo.PodInfoPayload payload = new PodInfo.PodInfoPayload();
+        added.setPayload(payload);
+        payload.setPodUrl("pod-url");
+        payload.setAgentUrl("agent-url");
+        payload.setSessionAuthUrl("sessionauth-url");
 
         podDirectory.addPodInfo(added);
 

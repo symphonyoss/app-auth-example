@@ -58,18 +58,28 @@ public class DirectoryWebhookControllerTest {
     @Test
     public void updatePodInfo() throws Exception {
         PodInfo podInfo = new PodInfo();
-        podInfo.setAgentHost("agent-host");
-        podInfo.setPodHost("pod-host");
-        podInfo.setPodId("pod-id");
+        podInfo.setCompanyId("company-id");
+        podInfo.setAppId("app-id");
+        podInfo.setEventType(PodInfo.EventType.APP_ENABLED);
+        PodInfo.PodInfoPayload payload = new PodInfo.PodInfoPayload();
+        podInfo.setPayload(payload);
+        payload.setAgentUrl("agent-url");
+        payload.setPodUrl("pod-url");
+        payload.setSessionAuthUrl("sessionauth-url");
 
         given()
                 .standaloneSetup(new DirectoryWebhookController(podDirectory, webhookConfiguration))
                 .contentType("application/json")
                 .body("{ " +
-                     "    \"podId\" : \"pod-id\"," +
-                     "    \"agentHost\" : \"agent-host\"," +
-                     "    \"podHost\" : \"pod-host\"" +
-                     "}")
+                      "    \"appId\" : \"app-id\"," +
+                      "    \"companyId\" : \"company-id\"," +
+                      "    \"eventType\" : \"APP_ENABLED\"," +
+                      "    \"payload\" : {" +
+                      "        \"podUrl\" : \"pod-url\"," +
+                      "        \"agentUrl\" : \"agent-url\"," +
+                      "        \"sessionAuthUrl\" : \"sessionauth-url\"" +
+                      "     }" +
+                      "}")
                 .header("api-key", "super-secret-api-key-1234")
         .when()
                 .post("/podInfo")
@@ -90,11 +100,16 @@ public class DirectoryWebhookControllerTest {
         given()
                 .standaloneSetup(new DirectoryWebhookController(podDirectory, webhookConfiguration))
                 .contentType("application/json")
-                .body("{ " +
-                     "    \"podId\" : \"pod-id\"," +
-                     "    \"agentHost\" : \"agent-host\"," +
-                     "    \"podHost\" : \"pod-host\"" +
-                     "}")
+                .body(  "{ " +
+                        "    \"appId\" : \"appId-id\"," +
+                        "    \"companyId\" : \"company-id\"," +
+                        "    \"eventType\" : \"APP_ENABLED\"," +
+                        "    \"payload\" : {" +
+                        "        \"podUrl\" : \"pod-url\"," +
+                        "        \"agentUrl\" : \"agent-url\"," +
+                        "        \"sessionAuthUrl\" : \"sessionauth-url\"" +
+                        "     }" +
+                        "}")
                 .header("api-key", "this-is-not-the-key")
         .when()
                 .post("/podInfo")
@@ -105,7 +120,7 @@ public class DirectoryWebhookControllerTest {
     }
 
     /**
-     * Test bad request (missing podId)
+     * Test bad request (missing companyId)
      */
     @Test
     public void updatePodInfoBadRequest() throws Exception {
@@ -115,10 +130,15 @@ public class DirectoryWebhookControllerTest {
         given()
                 .standaloneSetup(new DirectoryWebhookController(podDirectory, webhookConfiguration))
                 .contentType("application/json")
-                .body("{ " +
-                     "    \"agentHost\" : \"agent-host\"," +
-                     "    \"podHost\" : \"pod-host\"" +
-                     "}")
+                .body(  "{ " +
+                        "    \"appId\" : \"appId-id\"," +
+                        "    \"eventType\" : \"APP_ENABLED\"," +
+                        "    \"payload\" : {" +
+                        "        \"podUrl\" : \"pod-url\"," +
+                        "        \"agentUrl\" : \"agent-url\"," +
+                        "        \"sessionAuthUrl\" : \"sessionauth-url\"" +
+                        "     }" +
+                        "}")
                 .header("api-key", "super-secret-api-key-1234")
         .when()
                 .post("/podInfo")

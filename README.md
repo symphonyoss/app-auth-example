@@ -15,7 +15,7 @@ There are examples for:
 This is not meant to be production quality code.  Only minimal error handling code has been provided.
 
 The actual endpoint URLs exposed by this application are only examples. They are either called by a matching Javascript
-app or are called by Symphony via registering the URL (+ API key) when the app is installed on the pod.
+app or are called by Symphony via registering the URL (+ API key) when the app is installed on the pod (1.46+).
 
 The AuthenticationClient is a [Feign](https://github.com/OpenFeign/feign) client which is configured to use an
 OkHttp client that is set up for client certificate authentication.  The values for keystore and truststore are 
@@ -27,10 +27,19 @@ end server would send a response that causes the front end app to display a form
 their app specific user ID (and password).  These values are returned to the back end and if validated, a mapping
 between Symphony user ID and app user ID is persisted.  This is a one-time operation.
 
+This example requires a Symphony pod with at least release 1.45 deployed.  Also, in 1.45, the callback/webhook that
+pushes pod info into this application is not implemented so Postman (or simililar) must be used to push pod info into
+the server after it is started.  An example Postman collection is provided (App Auth.postman_collection).  You will 
+need to edit it with your won app and pod info.
+
 
 ####Requirements
 * Java 8+
 * Maven 3.0+
+* Pod at least at 1.45
+* An app installed on the pod
+* A certificate for your app (with Subject matching app name) with public cert uploaded to the pod
+* Keystore with private cert for your app (in /conf/keystore.p12 directory by default)
 
 ####Build
 
@@ -49,3 +58,37 @@ or you can use Maven to run the application directly
 ```
 mvn spring-boot:run
 ```
+
+By default, the server will open port 8443 for SSL connections.  This can be changed in application.yaml.
+
+Once running, push pod info into the server by POSTing to the /podInfo endpoint using Postman or curl or similar.
+
+```
+POST /podInfo HTTP/1.1
+Host: localhost:8443
+Content-Type: application/json
+API-Key: super-secret-api-key-1234
+Cache-Control: no-cache
+Postman-Token: 054900b2-1b05-be3d-057f-f35040249449
+
+{
+	"appId" : "your-app-name",
+	"companyId" : "your pod ID / company ID",
+	"eventType" : "APP_ENABLED",
+	"payload" : {
+		"agentUrl" : "https://your.agent.domain:443",
+		"podUrl" : "https://your.agent.domain:443",
+		"sessionAuthUrl" : "https://your.pod.domain:8444"
+	}
+}
+```
+
+Then Login to Symphony client.  Once logged in, go into developer mode by added the following query string (assumes 
+you are running the server on localhost)
+
+```
+https://your.pod.domain/client/index.html?bundle=https://localhost:8443/json/bundle.json#
+```
+
+You will get a warning dialog about "Unauthorized App(s)". Verify and continue.
+

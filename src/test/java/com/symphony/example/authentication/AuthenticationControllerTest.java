@@ -75,7 +75,7 @@ public class AuthenticationControllerTest {
                 .standaloneSetup(new AuthenticationController(authenticationService, userService))
                 .contentType("application/json")
                 .body("{" +
-                      "    \"podId\" : \"pod-id\"," +
+                      "    \"companyId\" : \"pod-id\"," +
                       "    \"appToken\" : \"app-token\"," +
                       "    \"symphonyToken\" : \"symphony-token\"" +
                       "}")
@@ -93,7 +93,7 @@ public class AuthenticationControllerTest {
                 .standaloneSetup(new AuthenticationController(authenticationService, userService))
                 .contentType("application/json")
                 .body("{" +
-                      "    \"podId\" : \"pod-id\"," +
+                      "    \"companyId\" : \"pod-id\"," +
                       "    \"appToken\" : \"app-token\"," +
                       "    \"symphonyToken\" : \"symphony-token\"" +
                       "}")
@@ -125,7 +125,7 @@ public class AuthenticationControllerTest {
                 .standaloneSetup(new AuthenticationController(authenticationService, userService))
                 .contentType("application/json")
                 .body("{ " +
-                      "    \"podId\" : \"pod-id\"," +
+                      "    \"companyId\" : \"pod-id\"," +
                       "    \"jwt\" : \"the-jwt\"" +
                       "}")
         .when()
@@ -146,7 +146,7 @@ public class AuthenticationControllerTest {
                 .standaloneSetup(new AuthenticationController(authenticationService, userService))
                 .contentType("application/json")
                 .body("{ " +
-                      "    \"podId\" : \"pod-id\"," +
+                      "    \"companyId\" : \"pod-id\"," +
                       "    \"jwt\" : \"the-jwt\"" +
                       "}")
         .when()
@@ -168,7 +168,7 @@ public class AuthenticationControllerTest {
                 .standaloneSetup(new AuthenticationController(authenticationService, userService))
                 .contentType("application/json")
                 .body("{ " +
-                      "    \"podId\" : \"pod-id\"," +
+                      "    \"companyId\" : \"pod-id\"," +
                       "    \"jwt\" : \"the-jwt\"" +
                       "}")
         .when()
@@ -201,7 +201,7 @@ public class AuthenticationControllerTest {
 
     @Test
     public void usernameLoginMappingFound() throws Exception {
-        Mockito.when(authenticationService.getUserFromJwt("the-jwt", "pod-id")).thenReturn("symphony-username");
+        Mockito.when(authenticationService.getUserFromJwt("the-jwt", "company-id")).thenReturn("symphony-username");
         User user = new User("display-name", "app-username");
         Mockito.when(userService.get("app-username")).thenReturn(user);
         given()
@@ -209,7 +209,7 @@ public class AuthenticationControllerTest {
                 .contentType("application/json")
                 .body("{ " +
                       "    \"username\" : \"app-username\"," +
-                      "    \"podId\" : \"pod-id\"," +
+                      "    \"companyId\" : \"company-id\"," +
                       "    \"jwt\" : \"the-jwt\"" +
                       "}")
                 .when()
@@ -230,7 +230,7 @@ public class AuthenticationControllerTest {
                 .contentType("application/json")
                 .body("{ " +
                       "    \"jwt\" : \"the-jwt\"," +
-                      "    \"podId\" : \"pod-id\"" +
+                      "    \"companyId\" : \"pod-id\"" +
                       "}")
                 .when()
                 .post("/login-with-username")
@@ -251,7 +251,7 @@ public class AuthenticationControllerTest {
                 .contentType("application/json")
                 .body("{ " +
                         "    \"username\" : \"app-username\"," +
-                        "    \"podId\" : \"pod-id\"," +
+                        "    \"companyId\" : \"pod-id\"," +
                         "    \"jwt\" : \"the-jwt\"" +
                         "}")
                 .when()
@@ -275,7 +275,7 @@ public class AuthenticationControllerTest {
                 .contentType("application/json")
                 .body("{ " +
                       "    \"username\" : \"app-username\"," +
-                      "    \"podId\" : \"pod-id\"," +
+                      "    \"companyId\" : \"pod-id\"," +
                       "    \"jwt\" : \"the-jwt\"" +
                       "}")
                 .when()

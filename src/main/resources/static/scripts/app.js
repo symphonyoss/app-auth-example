@@ -13,9 +13,8 @@
 
 var appId = 'developerTestApp';
 
-// ID of pod - comes back from 'hello'
+// ID of pod/company - comes back from 'hello'
 var podId;
-var userId;
 var uiService;
 var navService;
 var modulesService;
@@ -70,7 +69,7 @@ function login()
 // }
 
 // At this point, if userFound == false, we need to show the form to collect username then submit
-// username, JWT and podId (as a JSON structure) to /login-with-username
+// username, JWT and companyId (as a JSON structure) to /login-with-username
 //
 // If userFound == true, use userDisplayName to display a welcome message (or just show the message from
 // the response which is a welcome message.
@@ -78,7 +77,6 @@ function login()
 function setState(response) {
     if (!response.userFound) {
         $(document.body).addClass('login');
-        $('#username').change(clearError);
         $('#submit').click(saveUser);
     } else {
         $(document.body).removeClass('login');
@@ -91,10 +89,12 @@ function setError(message) {
 }
 
 function clearError() {
-    $('#error').html('');
+   $('#error').html('');
 }
 
 function saveUser() {
+    clearError();
+
     var username = $('#username').val();
 
     if (!username) {

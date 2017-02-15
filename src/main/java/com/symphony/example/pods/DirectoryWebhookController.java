@@ -70,8 +70,8 @@ public class DirectoryWebhookController {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
 
-        // Ensure pod info present and at least has pod ID.
-        if (StringUtils.isEmpty(podInfo.getPodId())) {
+        // Ensure pod info present and at least has company ID.
+        if (StringUtils.isEmpty(podInfo.getCompanyId())) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 

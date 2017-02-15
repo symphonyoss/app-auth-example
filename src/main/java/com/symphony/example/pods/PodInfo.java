@@ -16,11 +16,24 @@ package com.symphony.example.pods;
 import lombok.Data;
 
 /**
- * Stores pod host information.
+ * Webhook payload from Symphony containing information about the pod.
  */
 @Data
 public class PodInfo {
-    private String podId;
-    private String agentHost;
-    private String podHost;
+    private String appId;
+    private String companyId;
+    private EventType eventType;
+    private PodInfoPayload payload;
+
+    public enum EventType {
+        APP_ENABLED,
+        AGENT_REGISTERED;
+    }
+
+    @Data
+    public static class PodInfoPayload {
+        private String agentUrl;
+        private String podUrl;
+        private String sessionAuthUrl;
+    }
 }

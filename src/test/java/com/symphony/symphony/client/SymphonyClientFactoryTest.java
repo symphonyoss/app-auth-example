@@ -18,13 +18,7 @@ import com.symphony.example.pods.PodInfo;
 import feign.Client;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -56,25 +50,31 @@ public class SymphonyClientFactoryTest {
     public void testGetAuthenticationClient() {
 
         PodInfo podInfo = new PodInfo();
-        podInfo.setPodId("pod-id");
-        podInfo.setPodHost("pod-host");
-        when(podDirectory.getPodInfo("pod-id")).thenReturn(podInfo);
+        podInfo.setCompanyId("company-id");
+        PodInfo.PodInfoPayload payload = new PodInfo.PodInfoPayload();
+        podInfo.setPayload(payload);
+        payload.setPodUrl("pod-url");
+        payload.setSessionAuthUrl("sessionauth-url");
+        when(podDirectory.getPodInfo("company-id")).thenReturn(podInfo);
 
         PodInfo anotherPodInfo = new PodInfo();
-        anotherPodInfo.setPodId("another-pod-id");
-        anotherPodInfo.setPodHost("another-pod-host");
-        when(podDirectory.getPodInfo("another-pod-id")).thenReturn(anotherPodInfo);
+        PodInfo.PodInfoPayload anotherPayload = new PodInfo.PodInfoPayload();
+        anotherPodInfo.setPayload(anotherPayload);
+        anotherPodInfo.setCompanyId("another-company-id");
+        anotherPayload.setPodUrl("another-pod-url");
+        anotherPayload.setSessionAuthUrl("another-sessionauth-url");
+        when(podDirectory.getPodInfo("another-company-id")).thenReturn(anotherPodInfo);
 
 
-        AuthenticationClient authenticationClient = symphonyClientFactory.getAuthenticationClient("pod-id");
+        AuthenticationClient authenticationClient = symphonyClientFactory.getAuthenticationClient("company-id");
         assertNotNull("Should return something", authenticationClient);
 
-        AuthenticationClient anotherAuthenticationClient = symphonyClientFactory.getAuthenticationClient("another-pod-id");
+        AuthenticationClient anotherAuthenticationClient = symphonyClientFactory.getAuthenticationClient("another-company-id");
         assertNotNull("Should return something", anotherAuthenticationClient);
 
         assertNotSame("Should be different objects", authenticationClient, anotherAuthenticationClient);
 
-        AuthenticationClient sameAuthenticationClient = symphonyClientFactory.getAuthenticationClient("pod-id");
+        AuthenticationClient sameAuthenticationClient = symphonyClientFactory.getAuthenticationClient("company-id");
 
         assertSame("Should return same object", authenticationClient, sameAuthenticationClient);
 

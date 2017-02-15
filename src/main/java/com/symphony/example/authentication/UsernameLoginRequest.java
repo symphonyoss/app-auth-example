@@ -25,5 +25,5 @@ import lombok.Data;
 public class UsernameLoginRequest {
     private String username;
     private String jwt;
-    private String podId;
+    private String companyId;
 }

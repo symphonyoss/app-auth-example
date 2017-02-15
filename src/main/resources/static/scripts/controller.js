@@ -16,7 +16,7 @@ var appId = 'developerTestApp';
 // application token, returned from /authentication, passed to /validateTokens
 var appToken;
 
-// ID of pod - comes back from 'hello'
+// ID of pod/company - comes back from 'hello'
 var podId;
 
 // Kicks off app authentication flow at server.  Passes pod ID which came from 'hello' call previously.
@@ -24,7 +24,6 @@ var podId;
 function authenticate(response) {
 
     console.log('Response: ', response);
-    // console.log('pod ID: ' + response);
     podId = ''+ response.pod;
 
     // /authenticate returns app token in body (only)
@@ -36,8 +35,8 @@ function authenticate(response) {
         }.bind(this));
 }
 
-// Sends the application token (and the symphony token) back to the server for validation.  In this implemetation,
-// we are passing back both tokens so that back end can remain stateless. If a sticky session had been establishd,
+// Sends the application token (and the symphony token) back to the server for validation.  In this implementation,
+// we are passing back both tokens so that back end can remain stateless. If a sticky session had been established,
 // only the app token would be required since the Symphony token could have been stored in the session on the server.
 function validate(response)
 {

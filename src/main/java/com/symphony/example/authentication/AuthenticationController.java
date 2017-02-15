@@ -97,13 +97,13 @@ public class AuthenticationController {
         LoginResponse response = new LoginResponse();
         HttpStatus status = HttpStatus.OK;
 
-        if (StringUtils.isEmpty(request.getJwt()) || StringUtils.isEmpty(request.getPodId())) {
+        if (StringUtils.isEmpty(request.getJwt()) || StringUtils.isEmpty(request.getCompanyId())) {
             response.setMessage("Missing JWT or pod ID in request");
             status = HttpStatus.BAD_REQUEST;
         }
         else {
             try {
-                String symphonyUsername = authenticationService.getUserFromJwt(request.getJwt(), request.getPodId());
+                String symphonyUsername = authenticationService.getUserFromJwt(request.getJwt(), request.getCompanyId());
                 response.setJwtValid(true);
                 User user = userService.findBySymphonyId(symphonyUsername);
                 if (user == null) {
@@ -140,14 +140,14 @@ public class AuthenticationController {
         LoginResponse response = new LoginResponse();
         HttpStatus status = HttpStatus.OK;
 
-        if (StringUtils.isEmpty(request.getJwt()) || StringUtils.isEmpty(request.getPodId()) || StringUtils.isEmpty(request.getUsername())) {
+        if (StringUtils.isEmpty(request.getJwt()) || StringUtils.isEmpty(request.getCompanyId()) || StringUtils.isEmpty(request.getUsername())) {
             response.setMessage("Missing username, JWT or pod ID in request");
             status = HttpStatus.BAD_REQUEST;
         }
         else {
             try {
                 User user = userService.get(request.getUsername());
-                String symphonyUsername = authenticationService.getUserFromJwt(request.getJwt(), request.getPodId());
+                String symphonyUsername = authenticationService.getUserFromJwt(request.getJwt(), request.getCompanyId());
 
                 // Save Symphony username in user record to record mapping
                 user.setSymphonyId(symphonyUsername);

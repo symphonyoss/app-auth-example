@@ -135,13 +135,13 @@ public class AuthenticationService {
      * }
      *
      * @param jwt JSON Web Token from Symphony which includes user identification information
-     * @param podId ID of pod which generated the JWT
+     * @param companyId company ID for pod which generated the JWT
      * @return user's symphony username
      * @throws LoginException if JWT is invalid
      */
-    public String getUserFromJwt(String jwt, String podId) throws LoginException {
+    public String getUserFromJwt(String jwt, String companyId) throws LoginException {
 
-        AuthenticationClient authenticationClient = symphonyClientFactory.getAuthenticationClient(podId);
+        AuthenticationClient authenticationClient = symphonyClientFactory.getAuthenticationClient(companyId);
 
         // Don't trust a JWT that isn't signed!!!
         if (!Jwts.parser().isSigned(jwt)) {

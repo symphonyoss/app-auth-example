@@ -17,8 +17,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Stores information about Symphony pods.  PodInfo is stored and retrieved using Pod IDs.  This information comes from
- * Symphony via webhook which is registered when the App is enabled for a pod using the Symphony Admin Portal.
+ * Stores information about Symphony pods.  PodInfo is stored and retrieved using company IDs.  This information comes
+ * from Symphony via webhook which is registered when the App is enabled for a pod using the Symphony Admin Portal.
  *
  * This implementation just stores pod info in an in-memory map.  A real implementation would probably store this in
  * something more persistent (ie. a database of some sort).
@@ -30,18 +30,18 @@ public class PodDirectory {
      * Adds pod info to the directory.
      */
     public void addPodInfo(PodInfo podInfo) {
-        podCache.put(podInfo.getPodId(), podInfo);
+        podCache.put(podInfo.getCompanyId(), podInfo);
     }
 
     /**
-     * Returns pod info for pod with specified ID.  It is an error if there is no pod info.
+     * Returns pod info for pod with specified company ID.  It is an error if there is no pod info.
      *
-     * @throws IllegalStateException if no pod info has been registered for the supplied ID
+     * @throws IllegalStateException if no pod info has been registered for the supplied company ID
      */
-    public PodInfo getPodInfo(String podId) {
-        PodInfo podInfo = podCache.get(podId);
+    public PodInfo getPodInfo(String companyId) {
+        PodInfo podInfo = podCache.get(companyId);
         if (podInfo == null) {
-            throw new IllegalStateException("Missing pod info for pod with ID '" + podId + "'. " +
+            throw new IllegalStateException("Missing pod info for pod with company ID '" + companyId + "'. " +
                     "This information should have been populated via webhook callback from Symphony when the app was enable for the pod.");
         }
         return podInfo;
