@@ -83,8 +83,8 @@ Postman-Token: 054900b2-1b05-be3d-057f-f35040249449
 }
 ```
 
-Then Login to Symphony client.  Once logged in, go into developer mode by added the following query string (assumes 
-you are running the server on localhost)
+Then Login to Symphony client.  Once logged in, go into developer mode by adding the 'bundle' query string argument 
+(assumes you are running the server on localhost)
 
 ```
 https://your.pod.domain/client/index.html?bundle=https://localhost:8443/json/bundle.json#
@@ -92,3 +92,10 @@ https://your.pod.domain/client/index.html?bundle=https://localhost:8443/json/bun
 
 You will get a warning dialog about "Unauthorized App(s)". Verify and continue.
 
+You will see "App Auth Example" application show up under "Applications" on the left nav.
+
+Click on "App Auth Example" to open a module.  If this is the first time have openend the module and
+your pod username is not one of "dnathanson" or "jsmith" (defined in application.yaml), you will be prompted
+for your username in the sample app.  Enter either "dnathanson" or "jsmith" and Save.  The server will
+respond with Hello Dan Nathanson (or John Smith) and the mapping between Symphony username
+and app username will be remembered until the app server is rebooted.
