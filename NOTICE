@@ -1,4 +1,4 @@
-Symphony Integrations - Symphony Software Foundation
+Symphony App Auth Example - Symphony Software Foundation
 Copyright 2016-2017 Symphony LLC
  
 This product includes software developed at the Symphony Software Foundation (http://symphony.foundation).
@@ -27,9 +27,3 @@ CDDL 1.1:
 ========================================================================
 
 javax.ws.rs-api - https://jax-rs-spec.java.net/
-
-========================================================================
-JSON License
-========================================================================
-
-json - https://github.com/stleary/JSON-java
