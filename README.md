@@ -30,7 +30,7 @@ between Symphony user ID and app user ID is persisted.  This is a one-time opera
 This example requires a Symphony pod with at least release 1.45 deployed.  Also, in 1.45, the callback/webhook that
 pushes pod info into this application is not implemented so Postman (or simililar) must be used to push pod info into
 the server after it is started.  An example Postman collection is provided (App Auth.postman_collection).  You will 
-need to edit it with your won app and pod info.
+need to edit it with your own app and pod info.
 
 This Spring Boot application has SSL enabled.  By default, it is using the self-signed cert in conf/keystore.p12. 
 If you use this cert, you will need to configure your browser (or system) to trust the cert.  Or you

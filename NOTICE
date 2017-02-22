@@ -10,3 +10,20 @@ Eclipse Public License 1.0
 ========================================================================
 
 junit - http://junit.org/junit4/
+logback - http://logback.qos.ch
+
+========================================================================
+CDDL
+========================================================================
+
+javax.annotation-api - http://jcp.org/en/jsr/detail?id=250
+Glassfish HK2 - https://hk2.java.net/hk2
+Glassfish OSGi resource locator - http://glassfish.org/osgi-resource-locator/
+Jersey - https://jersey.java.net
+animal-sniffer-annotation - http://www.mojohaus.org/animal-sniffer/
+
+========================================================================
+CDDL 1.1:
+========================================================================
+
+javax.ws.rs-api - https://jax-rs-spec.java.net/
