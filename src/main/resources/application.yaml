@@ -1,6 +1,8 @@
 server:
   port: 8443
   ssl:
+    # This is a self signed cert.  You will need to configure your browser or your system to trust it.  Or replace it
+    # with a cert that has been signed by a trusted root.
     key-store: conf/keystore.p12
     key-store-password: changeit
     keyStoreType: PKCS12
@@ -13,7 +15,7 @@ webhook:
   apiKey: super-secret-api-key-1234
 
 symphony:
-  client:
+  client:cd ..
 
     # Keystore file that contains PKCS#12 / PFX format certificate used to authenticate this application to the
     # Symphony pod using client certificates.  Subject in cert must equal app ID.  The cert must be trusted by the

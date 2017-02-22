@@ -32,6 +32,10 @@ pushes pod info into this application is not implemented so Postman (or similila
 the server after it is started.  An example Postman collection is provided (App Auth.postman_collection).  You will 
 need to edit it with your won app and pod info.
 
+This Spring Boot application has SSL enabled.  By default, it is using the self-signed cert in conf/keystore.p12. 
+If you use this cert, you will need to configure your browser (or system) to trust the cert.  Or you
+can change to use a cert that is signed by a trusted root.  This is configured in application.yaml.
+
 
 ####Requirements
 * Java 8+
@@ -39,7 +43,7 @@ need to edit it with your won app and pod info.
 * Pod at least at 1.45
 * An app installed on the pod
 * A certificate for your app (with Subject matching app name) with public cert uploaded to the pod
-* Keystore with private cert for your app (in /conf/keystore.p12 directory by default)
+* Keystore with private cert for your app (configure location in application.yaml)
 
 ####Build
 
@@ -90,7 +94,12 @@ Then Login to Symphony client.  Once logged in, go into developer mode by adding
 https://your.pod.domain/client/index.html?bundle=https://localhost:8443/json/bundle.json#
 ```
 
-You will get a warning dialog about "Unauthorized App(s)". Verify and continue.
+You will get a warning dialog about "Unauthorized App(s)". Verify and continue.  If you don't get the warning
+dialog, it is probably because the SSL connection to localhost cannot be established, especially if you are 
+using the default self-signed cert.  Try accessing the bundle file directly by pasting the bundle
+URL directly into your browsers address bar.  That should give you an "untrusted cert" warning.  Follow the 
+browser's instructions to trust the cert.  Once you can get the bundle file to load by itself, try the
+full pod URL above again.
 
 You will see "App Auth Example" application show up under "Applications" on the left nav.
 
