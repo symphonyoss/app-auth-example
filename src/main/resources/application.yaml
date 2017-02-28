@@ -15,7 +15,7 @@ webhook:
   apiKey: super-secret-api-key-1234
 
 symphony:
-  client:cd ..
+  client:
 
     # Keystore file that contains PKCS#12 / PFX format certificate used to authenticate this application to the
     # Symphony pod using client certificates.  Subject in cert must equal app ID.  The cert must be trusted by the
