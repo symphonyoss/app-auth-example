@@ -1,3 +1,5 @@
+[![Symphony Software Foundation - Active](https://cdn.rawgit.com/symphonyoss/contrib-toolbox/master/images/ssf-badge-incubating.svg)](https://symphonyoss.atlassian.net/wiki/display/FM/Incubating) [![Dependencies](https://www.versioneye.com/user/projects/58accf374ca76f00331ce1c0/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/58accf374ca76f00331ce1c0?child=summary) [![Build Status](https://travis-ci.org/symphonyoss/app-auth-example.svg?branch=master)](https://travis-ci.org/symphonyoss/app-auth-example)
+
 ##App Authentication Sample Application
 This is an example back end application that provides an implementation of the [App Authentication Flow](TBD) used by
 Symphony to authenticate javascript applications (and users) that use the Symphony Extension API.
@@ -6,7 +8,7 @@ The application is built upon Spring Boot.  A Feign client is used to make calls
 is configured to use client certificate authentication.
 
 There are examples for:
-* Handling webhook from Symphony for pod info updates 
+* Handling webhook from Symphony for pod info updates
 * Initiating authentication flow exchanging authentication tokens with the Symphony pod
 * Validating authentication tokens received from the Javascrip app
 * Logging in using signed JWT authenticated against public signing cert from Symphony pod.
@@ -18,7 +20,7 @@ The actual endpoint URLs exposed by this application are only examples. They are
 app or are called by Symphony via registering the URL (+ API key) when the app is installed on the pod (1.46+).
 
 The AuthenticationClient is a [Feign](https://github.com/OpenFeign/feign) client which is configured to use an
-OkHttp client that is set up for client certificate authentication.  The values for keystore and truststore are 
+OkHttp client that is set up for client certificate authentication.  The values for keystore and truststore are
 parameterized and can be configured in the application.yaml file.  The pod must have a public cert uploaded that allows
 it to trust the client cert. The subject of the client cert must be the app ID of the installed app.
 
@@ -29,7 +31,7 @@ between Symphony user ID and app user ID is persisted.  This is a one-time opera
 
 This example requires a Symphony pod with at least release 1.45 deployed.  Also, in 1.45, the callback/webhook that
 pushes pod info into this application is not implemented so Postman (or simililar) must be used to push pod info into
-the server after it is started.  An example Postman collection is provided (App Auth.postman_collection).  You will 
+the server after it is started.  An example Postman collection is provided (App Auth.postman_collection).  You will
 need to edit it with your own app and pod info.
 
 This Spring Boot application has SSL enabled.  By default, it is using the self-signed cert in conf/keystore.p12. 
@@ -87,7 +89,7 @@ Postman-Token: 054900b2-1b05-be3d-057f-f35040249449
 }
 ```
 
-Then Login to Symphony client.  Once logged in, go into developer mode by adding the 'bundle' query string argument 
+Then Login to Symphony client.  Once logged in, go into developer mode by adding the 'bundle' query string argument
 (assumes you are running the server on localhost)
 
 ```
