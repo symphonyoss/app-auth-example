@@ -17,17 +17,17 @@ var appId = 'developerTestApp';
 var appToken;
 
 // ID of pod/company - comes back from 'hello'
-var podId;
+var companyId;
 
 // Kicks off app authentication flow at server.  Passes pod ID which came from 'hello' call previously.
 // Returns Symphony token.
 function authenticate(response) {
 
     console.log('Response: ', response);
-    podId = ''+ response.pod;
+    companyId = ''+ response.pod;
 
     // /authenticate returns app token in body (only)
-    return ajax.call('/authenticate', podId, 'POST', 'text/text')
+    return ajax.call('/authenticate', companyId, 'POST', 'text/text')
         .then(function(data)
         {
             appToken = data;
@@ -41,7 +41,7 @@ function authenticate(response) {
 function validate(response)
 {
     var request = {
-        podId : podId,
+        companyId : companyId,
         symphonyToken : response.tokenS,
         appToken : appToken
     };

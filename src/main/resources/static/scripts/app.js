@@ -14,7 +14,7 @@
 var appId = 'developerTestApp';
 
 // ID of pod/company - comes back from 'hello'
-var podId;
+var companyId;
 var uiService;
 var navService;
 var modulesService;
@@ -38,7 +38,7 @@ function login()
                 var request =
                 {
                     jwt : jwt,
-                    podId : podId   // Must pass pod ID so that signature can be verified using certificate from pod
+                    companyId : companyId   // Must pass pod/company ID so that signature can be verified using certificate from pod
                 };
 
                 return ajax.call('/login-with-jwt', request, 'POST', 'application/json')
@@ -105,7 +105,7 @@ function saveUser() {
     var request = {
         username: username,
         jwt: jwt,
-        podId: podId
+        companyId: companyId
     };
 
     return ajax.call('/login-with-username', request, 'POST', 'application/json')
@@ -139,7 +139,7 @@ function setTheme(theme)
 }
 
 function connect(helloResponse) {
-    podId = '' + helloResponse.pod;
+    companyId = '' + helloResponse.pod;
     return SYMPHONY.application.connect(appId, ['ui', 'modules', 'applications-nav', 'extended-user-info'], [])
         .then(login)
         .then(function(loginResponse) {

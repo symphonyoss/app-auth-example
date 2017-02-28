@@ -22,7 +22,7 @@ import lombok.Data;
  */
 @Data
 public class ValidateTokensRequest {
-    private String podId;
+    private String companyId;
     private String symphonyToken;
     private String appToken;
 }

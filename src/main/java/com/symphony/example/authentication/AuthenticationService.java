@@ -70,11 +70,11 @@ public class AuthenticationService {
      * tokens form a pair that will be verified later in the flow via receiving that same symphony token via a
      * different channel (from the web app).  Pod ID comes from the Symphony Client (Front End).
      *
-     * @param podId ID of Pod, supplied from Symphony Front End
+     * @param companyId ID of company/pod, supplied from Symphony Front End
      * @return token app token
      */
-    public String initiateAppAuthentication(String podId) {
-        AuthenticationClient authenticationClient = symphonyClientFactory.getAuthenticationClient(podId);
+    public String initiateAppAuthentication(String companyId) {
+        AuthenticationClient authenticationClient = symphonyClientFactory.getAuthenticationClient(companyId);
 
         String appToken = tokenGenerator.generateToken();
         AuthenticateRequest authenticateRequest = new AuthenticateRequest();

@@ -46,17 +46,17 @@ public class SymphonyClientFactory {
     /**
      * Returns a Feign client for the Symphony authentication REST endpoints.  Reuses existing client if already
      * built, otherwise builds and caches a new one.
-     * @param podId ID of pod for which client is needed
+     * @param companyId ID of company/pod for which client is needed
      * @return REST client for pod
      * @throws IllegalStateException if no pod info is present for pod ID
      */
-    public AuthenticationClient getAuthenticationClient(String podId) {
+    public AuthenticationClient getAuthenticationClient(String companyId) {
         // Gets pod info from PodDirectory. This will throw IllegalStateException if no pod info is available for pod ID
-        PodInfo podInfo = podDirectory.getPodInfo(podId);
+        PodInfo podInfo = podDirectory.getPodInfo(companyId);
         final String podHost = podInfo.getPayload().getSessionAuthUrl();
 
         // Return existing (or create, cache and return new instance)
-        return clients.computeIfAbsent(podId, k -> Feign.builder()
+        return clients.computeIfAbsent(companyId, k -> Feign.builder()
                 .encoder(new JacksonEncoder())
                 .decoder(new JacksonDecoder())
                 .client(okHttpClient)
