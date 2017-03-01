@@ -18,16 +18,20 @@ symphony:
   client:
 
     # Keystore file that contains PKCS#12 / PFX format certificate used to authenticate this application to the
-    # Symphony pod using client certificates.  Subject in cert must equal app ID.  The cert must be trusted by the
+    # Symphony pod using client certificates.  Subject name in cert must equal app ID.  The cert must be trusted by the
     # Symphony pod, either by uploading the public part of the cert itself or the public signing cert for this cert.
-    keystoreFilename: /usr/local/atlas/symphony/env/localhost/certs/developerTestApp.p12
+    keystoreFilename: /Users/daniel.nathanson/certs/appauthexample.p12
 
-    # default Java keystore password
+    # keystore password
     keystorePassword: changeit
 
     # This default value is the cacerts file distributed with the Java JDK which contains most common root certs
     truststoreFilename: /Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/lib/security/cacerts
 
+app:
+  # ID of app.  Generated when app is installed on pod using AC Portal. Can be found by clicking on app name in the
+  # App Management screen
+  appId: d7ad06e2915a4664a324478f113bf1ab
 
 # Populates the UserStore with list of users for this application
 userStore:

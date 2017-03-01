@@ -11,8 +11,6 @@
  * limitations under the License.
  */
 
-var appId = 'developerTestApp';
-
 // ID of pod/company - comes back from 'hello'
 var companyId;
 var uiService;

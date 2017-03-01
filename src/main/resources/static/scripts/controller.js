@@ -11,8 +11,6 @@
  * limitations under the License.
  */
 
-var appId = 'developerTestApp';
-
 // application token, returned from /authentication, passed to /validateTokens
 var appToken;
 
@@ -53,11 +51,9 @@ function validate(response)
         }.bind(this));
 }
 
-var userId;
 var uiService;
 var navService;
 var modulesService;
-var userService;
 
 function register(appData) {
     return SYMPHONY.application.register(appData, ['ui', 'modules', 'applications-nav', 'extended-user-info'], ['authexample:controller'])

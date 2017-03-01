@@ -44,9 +44,30 @@ can change to use a cert that is signed by a trusted root.  This is configured i
 * Maven 3.0+
 * Pod at least at 1.45
 * An app installed on the pod
-* A certificate for your app (with Subject matching app name) with public cert uploaded to the pod
+* A certificate for your app (with Subject common name matching app ID) with signing cert uploaded to the pod
 * Keystore with private cert for your app (configure location in application.yaml)
 
+####Configuration
+From the AC Portal, add a custom app (App Management --> Add Custom App). After you save the app, click on the app
+name in the App Management screen and copy the App ID (which will be a generated alphanumeric string).
+
+Generate a PKCS12 cert file for your app with subject common name matching app ID.  The signing cert for this cert 
+must be uploaded to the pod (AC Portal --> Manage Certificates --> Import)
+
+In src/main/resources/application.yaml:
+* Configure SSL for embedded tomcat server.  Default configuration is to use a self-signed cert packaged with this
+application. If you do that, you will need to explicitly trust the certificate. You can do that by loading the index.html
+page directly in the browser.  It wont display anything, but the browser will warn you about untrusted site.  Trust it.
+* Configure the keystore and truststore for the HTTP client.  
+  * Set symphony.client.keystoreFilename: PKCS12 file generated above
+  * Set symphony.client.keystorePassword: Password used to generate cert above
+  * Set symphony.client.keystoreFilename: Trust store containing trusted roots.  Allows HTTP client to create secure
+    connections to Symphony pod. Since Symphony pods use valid SSL certs, you can just use the standard cacerts file
+    provided by the Java JDK.
+* Configure the ID of the application
+  * Set app.appId: alphanumeric string generated when custom app installed
+* Configure users. These are the users of this application. There are two default users: 'dnathanson' and 'jsmith'.   
+  
 ####Build
 
 ```
@@ -67,7 +88,9 @@ mvn spring-boot:run
 
 By default, the server will open port 8443 for SSL connections.  This can be changed in application.yaml.
 
-Once running, push pod info into the server by POSTing to the /podInfo endpoint using Postman or curl or similar.
+Once running, push pod info into the server by POSTing to the /podInfo endpoint using Postman or curl or similar. 
+You can find your companyId by logging into the Symphony client and viewing the source code of index.html.  Look for a
+Javascript object called 'window.env' and the copy the value of 'POD_ID'.
 
 ```
 POST /podInfo HTTP/1.1
