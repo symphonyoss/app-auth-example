@@ -4,15 +4,15 @@
 This is an example back end application that provides an implementation of the [App Authentication Flow](TBD) used by
 Symphony to authenticate javascript applications (and users) that use the Symphony Extension API.
 
-The application is built upon Spring Boot.  A Feign client is used to make calls the Symphony REST API.  The client
+The application is built upon Spring Boot.  A Feign client is used to make calls to the Symphony REST API.  The client
 is configured to use client certificate authentication.
 
 There are examples for:
-* Handling webhook from Symphony for pod info updates
-* Initiating authentication flow exchanging authentication tokens with the Symphony pod
-* Validating authentication tokens received from the Javascrip app
-* Logging in using signed JWT authenticated against public signing cert from Symphony pod.
-* Correlating application user with Symphony user.
+* Handling the webhook from Symphony for pod info updates
+* Initiating the authentication flow and exchanging authentication tokens with the Symphony pod
+* Validating the authentication tokens received from the Javascript app
+* Logging in using the signed JWT authenticated against the public signing cert from the Symphony pod.
+* Correlating the application user with the Symphony user.
 
 This is not meant to be production quality code.  Only minimal error handling code has been provided.
 
@@ -30,7 +30,7 @@ their app specific user ID (and password).  These values are returned to the bac
 between Symphony user ID and app user ID is persisted.  This is a one-time operation.
 
 This example requires a Symphony pod with at least release 1.45 deployed.  Also, in 1.45, the callback/webhook that
-pushes pod info into this application is not implemented so Postman (or simililar) must be used to push pod info into
+pushes pod info into this application is not implemented so Postman (or similar) must be used to push pod info into
 the server after it is started.  An example Postman collection is provided (App Auth.postman_collection).  You will
 need to edit it with your own app and pod info.
 
@@ -44,20 +44,20 @@ can change to use a cert that is signed by a trusted root.  This is configured i
 * Maven 3.0+
 * Pod at least at 1.45
 * An app installed on the pod
-* A certificate for your app (with Subject common name matching app ID) with signing cert uploaded to the pod
+* A certificate for your app (with the Subject common name matching app ID) with signing cert uploaded to the pod
 * Keystore with private cert for your app (configure location in application.yaml)
 
 ####Configuration
-From the AC Portal, add a custom app (App Management --> Add Custom App). After you save the app, click on the app
-name in the App Management screen and copy the App ID (which will be a generated alphanumeric string).
+From the AC Portal, add a custom app (App Management --> Add Custom App). Set "App Url" to the URL of where the App Auth Example app will be running on your local machine (Ex. https://localhost.symphony.com:8443/index.html). After you save the app, click on the app
+name in the App Management screen and copy the App ID (which will be a generated alphanumeric string). Remember to enable the app you just created and make it visible for the user with which you plan to test.
 
-Generate a PKCS12 cert file for your app with subject common name matching app ID.  The signing cert for this cert 
+Generate a PKCS12 cert file for your app with the Subject common name matching the App ID.  The signing cert for this cert 
 must be uploaded to the pod (AC Portal --> Manage Certificates --> Import)
 
 In src/main/resources/application.yaml:
 * Configure SSL for embedded tomcat server.  Default configuration is to use a self-signed cert packaged with this
 application. If you do that, you will need to explicitly trust the certificate. You can do that by loading the index.html
-page directly in the browser.  It wont display anything, but the browser will warn you about untrusted site.  Trust it.
+page directly in the browser.  It won't display anything, but the browser will warn you about an untrusted site.  Trust it.
 * Configure the keystore and truststore for the HTTP client.  
   * Set symphony.client.keystoreFilename: PKCS12 file generated above
   * Set symphony.client.keystorePassword: Password used to generate cert above
@@ -66,7 +66,7 @@ page directly in the browser.  It wont display anything, but the browser will wa
     provided by the Java JDK.
 * Configure the ID of the application
   * Set app.appId: alphanumeric string generated when custom app installed
-* Configure users. These are the users of this application. There are two default users: 'dnathanson' and 'jsmith'.   
+* Configure users. These are the users of this application. There are two default users: 'dnathanson' and 'jsmith'.
   
 ####Build
 
@@ -101,7 +101,7 @@ Cache-Control: no-cache
 Postman-Token: 054900b2-1b05-be3d-057f-f35040249449
 
 {
-	"appId" : "your-app-name",
+	"appId" : "your-app-Id",
 	"companyId" : "your pod ID / company ID",
 	"eventType" : "APP_ENABLED",
 	"payload" : {
@@ -112,24 +112,10 @@ Postman-Token: 054900b2-1b05-be3d-057f-f35040249449
 }
 ```
 
-Then Login to Symphony client.  Once logged in, go into developer mode by adding the 'bundle' query string argument
-(assumes you are running the server on localhost)
+Then Login to Symphony client.  Once logged in, go to the Symphony Market and look for your app. If your app is not visible, confirm you enabled it and made it visible in the AC portal. Install the app and click on the newly-created left nav item.
 
-```
-https://your.pod.domain/client/index.html?bundle=https://localhost:8443/json/bundle.json#
-```
-
-You will get a warning dialog about "Unauthorized App(s)". Verify and continue.  If you don't get the warning
-dialog, it is probably because the SSL connection to localhost cannot be established, especially if you are 
-using the default self-signed cert.  Try accessing the bundle file directly by pasting the bundle
-URL directly into your browsers address bar.  That should give you an "untrusted cert" warning.  Follow the 
-browser's instructions to trust the cert.  Once you can get the bundle file to load by itself, try the
-full pod URL above again.
-
-You will see "App Auth Example" application show up under "Applications" on the left nav.
-
-Click on "App Auth Example" to open a module.  If this is the first time have openend the module and
-your pod username is not one of "dnathanson" or "jsmith" (defined in application.yaml), you will be prompted
+If this is the first time have openend the module and
+your pod username is not either "dnathanson" or "jsmith" (defined in application.yaml), you will be prompted
 for your username in the sample app.  Enter either "dnathanson" or "jsmith" and Save.  The server will
 respond with Hello Dan Nathanson (or John Smith) and the mapping between Symphony username
 and app username will be remembered until the app server is rebooted.
