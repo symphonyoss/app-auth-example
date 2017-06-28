@@ -1,6 +1,6 @@
 [![Symphony Software Foundation - Active](https://cdn.rawgit.com/symphonyoss/contrib-toolbox/master/images/ssf-badge-incubating.svg)](https://symphonyoss.atlassian.net/wiki/display/FM/Incubating) [![Dependencies](https://www.versioneye.com/user/projects/58accf374ca76f00331ce1c0/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/58accf374ca76f00331ce1c0?child=summary) [![Build Status](https://travis-ci.org/symphonyoss/app-auth-example.svg?branch=master)](https://travis-ci.org/symphonyoss/app-auth-example)
 
-##App Authentication Sample Application
+## App Authentication Sample Application
 This is an example back end application that provides an implementation of the [App Authentication Flow](TBD) used by
 Symphony to authenticate javascript applications (and users) that use the Symphony Extension API.
 
@@ -39,7 +39,7 @@ If you use this cert, you will need to configure your browser (or system) to tru
 can change to use a cert that is signed by a trusted root.  This is configured in application.yaml.
 
 
-####Requirements
+#### Requirements
 * Java 8+
 * Maven 3.0+
 * Pod at least at 1.45
@@ -47,7 +47,7 @@ can change to use a cert that is signed by a trusted root.  This is configured i
 * A certificate for your app (with the Subject common name matching app ID) with signing cert uploaded to the pod
 * Keystore with private cert for your app (configure location in application.yaml)
 
-####Configuration
+#### Configuration
 From the AC Portal, add a custom app (App Management --> Add Custom App). Set "App Url" to the URL of where the App Auth Example app will be running on your local machine (Ex. https://localhost.symphony.com:8443/index.html). After you save the app, click on the app
 name in the App Management screen and copy the App ID (which will be a generated alphanumeric string). Remember to enable the app you just created and make it visible for the user with which you plan to test.
 
@@ -68,13 +68,13 @@ page directly in the browser.  It won't display anything, but the browser will w
   * Set app.appId: alphanumeric string generated when custom app installed
 * Configure users. These are the users of this application. There are two default users: 'dnathanson' and 'jsmith'.
   
-####Build
+#### Build
 
 ```
 mvn clean install
 ```
 
-####Run
+#### Run
 
 You can either build an executable jar and run that
 ```
