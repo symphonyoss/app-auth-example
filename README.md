@@ -1,7 +1,7 @@
 [![Symphony Software Foundation - Active](https://cdn.rawgit.com/symphonyoss/contrib-toolbox/master/images/ssf-badge-incubating.svg)](https://symphonyoss.atlassian.net/wiki/display/FM/Incubating) [![Dependencies](https://www.versioneye.com/user/projects/58accf374ca76f00331ce1c0/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/58accf374ca76f00331ce1c0?child=summary) [![Build Status](https://travis-ci.org/symphonyoss/app-auth-example.svg?branch=master)](https://travis-ci.org/symphonyoss/app-auth-example)
 
 ## App Authentication Sample Application
-This is an example back end application that provides an implementation of the [App Authentication Flow](https://extension-api.symphony.com/docs/application-authentication#section-sample-application) used by
+This is an example back end application that provides an implementation of the [App Authentication Flow](https://extension-api.symphony.com/docs/application-authentication) used by
 Symphony to authenticate javascript applications (and users) that use the Symphony Extension API.
 
 The application is built upon Spring Boot.  A Feign client is used to make calls to the Symphony REST API.  The client
