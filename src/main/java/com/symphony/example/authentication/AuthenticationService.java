@@ -18,7 +18,10 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.symphony.example.utils.SecurityKeyUtils;
 import com.symphony.symphony.client.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.DefaultClaims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -160,12 +163,17 @@ public class AuthenticationService {
             throw new LoginException("Couldn't parse cert string from Symphony into X509Certificate object:" + e.getMessage());
         }
 
-        DefaultClaims claims = (DefaultClaims) Jwts.parser()
-                .setSigningKey(publicKey)
-                .parseClaimsJws(jwt)
-                .getBody();
+        Jws<Claims> claims = Jwts.parser()
+                                 .setSigningKey(publicKey)
+                                 .parseClaimsJws(jwt);
 
-        Map userMap = (Map) claims.get("user");
+        // Double check that the algorithm is the expected RS512 to ensure cookie hasn't been forged and signed using
+        // public key.
+        if (!SignatureAlgorithm.RS512.name().equals(claims.getHeader().getAlgorithm())) {
+            throw new LoginException("Invalid JWT algorithm: " + claims.getHeader().getAlgorithm());
+        }
+
+        Map userMap = (Map) claims.getBody().get("user");
         return (String) userMap.get("username");
     }
 }
