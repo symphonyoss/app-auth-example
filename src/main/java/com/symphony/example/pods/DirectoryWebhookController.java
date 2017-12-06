@@ -53,17 +53,17 @@ public class DirectoryWebhookController {
      * Create / update pod info.  This endpoint is protected by an "API key" to prevent unauthorized access which
      * could inject bogus pod information into the PodDirectory. For this implementation, the API key is just a
      * hardcoded constant.  Real implementations probably want something more secure - at least a different API key
-     * for each pod. The API key is passed as an HTTP header value with name "API-Key".
+     * for each pod. The API key is passed as an HTTP header value with name "X-API-KEY".
      *
      * @param podInfo PodInfo object containing metadata about a pod
-     * @param apiKey API Key.  Comes from HTTP Header value "API-Key"
+     * @param apiKey API Key.  Comes from HTTP Header value "X-API-KEY"
      *
      * @return HTTP 401 - if API key missing or invalid<br/>
      *         HTTP 400 - if PodInfo bad or missing<br/>
      *         HTTP 200 - otherwise.
      */
     @RequestMapping(method = RequestMethod.POST, path = "/podInfo")
-    public ResponseEntity updatePodInfo(@RequestBody PodInfo podInfo, @RequestHeader("API-Key") String apiKey) {
+    public ResponseEntity updatePodInfo(@RequestBody PodInfo podInfo, @RequestHeader("X-API-KEY") String apiKey) {
 
         // Check API key
         if (StringUtils.isEmpty(apiKey) || !webhookConfiguration.getApiKey().equals(apiKey)) {
