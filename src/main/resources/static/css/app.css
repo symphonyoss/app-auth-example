@@ -1,7 +1,0 @@
-.show-login {display: none;}
-.hide-login {display: block;}
-
-.login .show-login {display: block;}
-.login .hide-login {display: none;}
-
-#username {width: 200px;}

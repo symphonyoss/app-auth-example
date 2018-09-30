@@ -61,7 +61,7 @@ page directly in the browser.  It won't display anything, but the browser will w
 * Configure the keystore and truststore for the HTTP client.  
   * Set symphony.client.keystoreFilename: PKCS12 file generated above
   * Set symphony.client.keystorePassword: Password used to generate cert above
-  * Set symphony.client.keystoreFilename: Trust store containing trusted roots.  Allows HTTP client to create secure
+  * Set symphony.client.truststoreFilename: Trust store containing trusted roots.  Allows HTTP client to create secure
     connections to Symphony pod. Since Symphony pods use valid SSL certs, you can just use the standard cacerts file
     provided by the Java JDK.
 * Configure the ID of the application
