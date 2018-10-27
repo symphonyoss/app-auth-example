@@ -32,6 +32,7 @@
 
     <modules>
         <module>cert-auth</module>
+        <module>rsa-auth</module>
     </modules>
 
 </project>

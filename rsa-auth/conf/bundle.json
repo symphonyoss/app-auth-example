@@ -1,0 +1,15 @@
+{
+  "type": "sandbox",
+  "appGroupId": "rsa-app-auth-example",
+  "name": "RSA App Auth Example 2",
+  "description": "App Auth Example using RSA",
+  "publisher": "Symphony",
+  "loadUrl": "https://localhost:9443/index.html",
+  "iconUrl" : "https://localhost:9443/Symphony2018_LogoAlt_RGB.png",
+  "domain": "localhost",
+  "notification": {
+    "url": "https://localhost:9443/podInfo",
+    "apiKey": "super-secret-api-key-1234"
+  },
+  "rsaKey" : "-----BEGIN PUBLIC KEY-----\nMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAqCtmh8Eg6a8YS7DLL3be\n6ksxN7nK0sN6+z4eNZ7eT5eF2D9WUbgZHNLjwMFwt9tCSP/1q50dVtXvz7mJUXqm\nf4KoUZNujmSyvLMOCV+wsdpOR7GZDsaQslXDggv5ppO7N4jFNo+0EnMxJBfqWaFi\n2O+TCYqgvzSaA0pYK+8nhF9ni9gcsdsblfGHNZWE+fjvEdhAnnaq5RkFnmdgS8IM\nDGK2JCfhfLwtsAk0aIm7sqdcw9vaCxGusx3vaJa0CHaxmKePCJwKpu4L4EPq9EV3\niO2sJFicXS7OjZT5+kGdxwvWpUEnWu8bbva2X/jKY/E1NyOjDaNgR2na5Zs1fAG8\n4G/Jfa2RJUzmKMRHNR1a+ptA7/3orvcKYsRpnO8dJa/X/NxdRlSoFlmB1ZvGubDR\nfElNZJ0qmPN7sQbaTFRLnPuPV4Rc43m/jj1M0GnMA1lw6UOmlppI0bPrhD6Z0sKr\nyBFI07ZdBuxbstIBxoXlb1KmVovceJ8n4+jEj3lURIMm1jAbdH2qMxbVR4L3HWLc\nSb3muGPnUVdj839U4dHN61iSMi2IILY85x5mi6ZPgY+jXYrl7GWCBszA9/OKIc/s\nCkTMy76aLFAlDNzNGuZTC5u10NP7NJ2tNIapH1pfWaSjNcZ/vEdZd9tL/l8WUOUf\nBAw4ErHs+ixqJgABH52wvwsCAwEAAQ==\n-----END PUBLIC KEY-----"
+}

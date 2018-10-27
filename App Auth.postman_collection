@@ -1,0 +1,36 @@
+{
+	"variables": [],
+	"info": {
+		"name": "App Auth",
+		"_postman_id": "72de9572-a9a8-e8bb-8ae6-8e47b91183f1",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Pod Info",
+			"request": {
+				"url": "https://localhost:9443/podInfo",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "API-Key",
+						"value": "super-secret-api-key-1234",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"appId\" : \"your-app-name\",\n\t\"companyId\" : \"company-id\",\n\t\"eventType\" : \"appEnabled\",\n\t\"payload\" : {\n\t\t\"agentUrl\" : \"https://your-agent-host:443\",\n\t\t\"podUrl\" : \"https://your-pod-host:443\",\n\t\t\"sessionAuthUrl\" : \"https://your-sessionauth-host:8444\"\n\t}\n}"
+				},
+				"description": "foo"
+			},
+			"response": []
+		}
+	]
+}

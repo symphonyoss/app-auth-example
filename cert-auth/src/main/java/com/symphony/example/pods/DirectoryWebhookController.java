@@ -13,6 +13,7 @@
 
 package com.symphony.example.pods;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Dan Nathanson
  */
 @RestController
+@Slf4j
 public class DirectoryWebhookController {
     private final PodDirectory podDirectory;
 
@@ -77,6 +79,8 @@ public class DirectoryWebhookController {
 
         // Store pod info
         podDirectory.addPodInfo(podInfo);
+
+        log.info("Received pod info callback: " + podInfo.toString());
 
         return new ResponseEntity(HttpStatus.OK);
 

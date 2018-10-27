@@ -56,8 +56,8 @@ public class AuthenticationController {
      *
      * @return App token
      */
-    @RequestMapping(method = POST, path = "/authenticate", produces = "application/json")
-    public HttpEntity<String> authenticate(@RequestBody String companyId) {
+    @RequestMapping(method = POST, path = "/initiate-app-auth", produces = "application/json")
+    public HttpEntity<String> initiateAppAuth(@RequestBody String companyId) {
         return new HttpEntity<>('"' + authenticationService.initiateAppAuthentication(companyId) + '"');
     }
 

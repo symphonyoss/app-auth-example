@@ -15,6 +15,7 @@ package com.symphony.symphony.client;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 /**
  * Configuration for the example application.  Properties are read from application.yaml and are prefixed
@@ -23,6 +24,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author Dan Nathanson
  */
 @Data
+@Component
 @ConfigurationProperties(prefix = "symphony.client")
 public class SymphonyClientConfiguration {
     private String keystoreFilename;

@@ -24,8 +24,8 @@ function authenticate(response) {
     console.log('Response: ', response);
     companyId = ''+ response.pod;
 
-    // /authenticate returns app token in body (only)
-    return ajax.call('/authenticate', companyId, 'POST', 'text/text')
+    // /initiate-app-auth returns app token in body (only)
+    return ajax.call('/initiate-app-auth', companyId, 'POST', 'text/text')
         .then(function(data)
         {
             appToken = data;
@@ -72,12 +72,12 @@ function register(appData) {
 
                 // LEFT NAV & MODULE: When the left navigation item is clicked on, invoke Symphony's module service to show our application in the grid
                 select: function (id) {
-                    if (id == "app-auth-nav") {
+                    if (id === "app-auth-nav") {
                         // Focus the left navigation item when clicked
                         navService.focus("hello-nav");
                     }
 
-                    modulesService.show("app-auth", {title: "App Auth Example"}, "authexample:controller", "https://localhost.symphony.com:8443/app.html", {
+                    modulesService.show("app-auth", {title: "Cert App Auth Example"}, "authexample:controller", baseUrl + "/app.html", {
                         // You must specify canFloat in the module options so that the module can be pinned
                         "canFloat": true
                     });

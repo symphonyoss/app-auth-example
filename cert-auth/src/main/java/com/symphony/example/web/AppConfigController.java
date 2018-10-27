@@ -47,6 +47,7 @@ public class AppConfigController {
         response.setContentType("text/javascript");
         PrintWriter writer = response.getWriter();
         writer.write("var appId = '" + appConfig.getAppId() + "';\n");
+        writer.write("var baseUrl = '" + appConfig.getBaseUrl() + "';\n");
         writer.flush();
         writer.close();
     }

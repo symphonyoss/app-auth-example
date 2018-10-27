@@ -40,6 +40,7 @@ public class AppConfigControllerTest {
     public void setup() {
         AppConfig appConfig = new AppConfig();
         appConfig.setAppId("app-id");
+        appConfig.setBaseUrl("base-url");
         controller = new AppConfigController(appConfig);
     }
 
@@ -52,6 +53,7 @@ public class AppConfigControllerTest {
 
         controller.appConfig(null, response);
 
-        assertThat(byteArrayOutputStream.toString()).isEqualTo("var appId = 'app-id';\n");
+        assertThat(byteArrayOutputStream.toString()).isEqualTo("var appId = 'app-id';\n" +
+                "var baseUrl = 'base-url';\n");
     }
  }

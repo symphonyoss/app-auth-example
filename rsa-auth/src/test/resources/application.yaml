@@ -1,0 +1,13 @@
+symphony:
+  client:
+
+    # Keystore file that contains PKCS#12 / PFX format certificate used to initiateAppAuth this application to the
+    # Symphony pod using client certificates.  Subject in cert must equal app ID.  The cert must be trusted by the
+    # Symphony pod, either by uploading the public part of the cert itself or the public signing cert for this cert.
+    keystoreFilename: src/test/resources/bot.user1.p12
+
+    # default Java keystore password
+    keystorePassword: changeit
+
+    # This default value is the cacerts file distributed with the Java JDK which contains most common root certs
+    truststoreFilename: src/test/resources/cacerts

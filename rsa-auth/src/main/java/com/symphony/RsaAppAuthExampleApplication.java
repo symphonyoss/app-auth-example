@@ -26,40 +26,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
+/**
+ * Main class for this Spring Boot application.
+ */
 @SpringBootApplication
 @EnableConfigurationProperties({SymphonyClientConfiguration.class, WebhookConfiguration.class})
-public class AppAuthExampleApplication {
-
-    private final SymphonyClientConfiguration symphonyClientConfiguration;
-    private final WebhookConfiguration webhookConfiguration;
-
-    @Autowired
-    public AppAuthExampleApplication(SymphonyClientConfiguration symphonyClientConfiguration, WebhookConfiguration webhookConfiguration) {
-        this.symphonyClientConfiguration = symphonyClientConfiguration;
-        this.webhookConfiguration = webhookConfiguration;
-    }
-
-    @Bean
-    public PodDirectory getPodDirectory() {
-        return new PodDirectory();
-    }
-
-    @Bean
-    SymphonyClientFactory getSymphonyClientFactory() {
-        return new SymphonyClientFactory(getHttpClientBuilder(), getPodDirectory());
-    }
-
-    @Bean
-    HttpClientBuilder getHttpClientBuilder() {
-        return new HttpClientBuilder(symphonyClientConfiguration);
-    }
-
-    @Bean
-    TokenGenerator getTokenGenerator() {
-        return new TokenGenerator();
-    }
+public class RsaAppAuthExampleApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(AppAuthExampleApplication.class, args);
+        SpringApplication.run(RsaAppAuthExampleApplication.class, args);
     }
 }

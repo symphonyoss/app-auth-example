@@ -15,6 +15,8 @@ package com.symphony.symphony.client;
 
 import feign.Client;
 import feign.okhttp.OkHttpClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.net.ssl.*;
 import java.io.FileInputStream;
@@ -30,9 +32,11 @@ import java.util.Arrays;
  *
  * @author Dan Nathanson
  */
+@Component
 public class HttpClientBuilder {
     private SymphonyClientConfiguration symphonyClientConfiguration;
 
+    @Autowired
     public HttpClientBuilder(SymphonyClientConfiguration symphonyClientConfiguration) {
         this.symphonyClientConfiguration = symphonyClientConfiguration;
     }

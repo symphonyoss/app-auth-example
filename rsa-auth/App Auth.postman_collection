@@ -10,7 +10,7 @@
 		{
 			"name": "Pod Info",
 			"request": {
-				"url": "https://localhost:8443/podInfo",
+				"url": "https://localhost:9443/podInfo",
 				"method": "POST",
 				"header": [
 					{

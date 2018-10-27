@@ -56,13 +56,13 @@ public class AuthenticationControllerTest {
     }
 
     @Test
-    public void authenticate() throws Exception {
+    public void initiateAppAuth() throws Exception {
         Mockito.when(authenticationService.initiateAppAuthentication("pod-id")).thenReturn("symphony-token");
         given()
                 .standaloneSetup(new AuthenticationController(authenticationService, userService))
                 .body("pod-id")
         .when()
-                .post("/authenticate")
+                .post("/initiate-app-auth")
         .then()
                 .assertThat(status().isOk())
                 .body(equalTo("\"symphony-token\""));

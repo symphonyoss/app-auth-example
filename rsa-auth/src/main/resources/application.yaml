@@ -1,0 +1,43 @@
+server:
+  port: 9443
+  ssl:
+    # This is a self signed cert.  You will need to configure your browser or your system to trust it.  Or replace it
+    # with a cert that has been signed by a trusted root.
+    key-store: conf/tomcat.keystore
+    key-store-password: changeit
+    key-alias: tomcat
+
+webhook:
+  # API Key.  Must be provided as part of metadata when installing app on the pod.  Pod will provide this API key
+  # back to this app in a HTTP request header "X-API-KEY" when calling the webhook to update pod info.
+  # Clearly, this should not be hardcoded in a # config
+  api-key: super-secret-api-key-1234
+
+authentication:
+   # Path to file containing private key in PEM format
+  private-key-pem-filename: ./conf/test-app-private-key.pem
+
+app:
+  # App ID - must match bundle file name
+  app-id: rsa-app-auth-example
+
+  # Host:port of this server.  Must be reachable from a browser.
+  base-url: https://localhost:9443
+
+
+symphony:
+  client:
+    # This default value is the cacerts file distributed with the Java JDK which contains most common root certs
+    # If connecting to pods with a self signed certs, use a custom trust store
+    truststore-filename: /Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/jre/lib/security/cacerts
+
+# Populates the UserStore with list of users for this application
+user-store:
+  users:
+    -
+      username: "jsmith"
+      display-name: "John Smith"
+    -
+      username: "tjones"
+      display-name: "Tom Jones"
+

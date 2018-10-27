@@ -15,6 +15,7 @@ package com.symphony.example.pods;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 /**
  * Configuration for /podInfo webhook.  Properties are read from application.yaml and are prefixed with "webhook".
@@ -23,6 +24,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @Data
 @ConfigurationProperties(prefix = "webhook")
+@Component
 public class WebhookConfiguration {
     private String apiKey;
 }

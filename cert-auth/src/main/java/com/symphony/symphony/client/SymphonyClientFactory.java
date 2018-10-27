@@ -20,6 +20,7 @@ import feign.Feign;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +33,7 @@ import java.util.Map;
  *
  * @author Dan Nathanson
  */
+@Component
 public class SymphonyClientFactory {
     private Map<String, AuthenticationClient> clients = new HashMap<>();
     private Client okHttpClient;
