@@ -1,5 +1,3 @@
-[![Symphony Software Foundation - Active](https://cdn.rawgit.com/symphonyoss/contrib-toolbox/master/images/ssf-badge-incubating.svg)](https://symphonyoss.atlassian.net/wiki/display/FM/Incubating) [![Dependencies](https://www.versioneye.com/user/projects/58accf374ca76f00331ce1c0/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/58accf374ca76f00331ce1c0?child=summary) [![Build Status](https://travis-ci.org/symphonyoss/app-auth-example.svg?branch=master)](https://travis-ci.org/symphonyoss/app-auth-example)
-
 ## RSA-based App Authentication Sample Application
 This is an example back end application that provides an implementation of the 
 [App Authentication Flow](https://extension-api.symphony.com/docs/application-authentication) used by
@@ -121,7 +119,7 @@ visible, confirm you enabled it and made it visible in the AC portal. Install th
 left nav item.
 
 If this is the first time have opened the module and
-your pod username is not either "dnathanson" or "jsmith" (defined in application.yaml), you will be prompted
+your pod username is not either "tjones" or "jsmith" (defined in application.yaml), you will be prompted
 for your username in the sample app.  Enter either "tjones" or "jsmith" and Save.  The server will
 respond with Hello Tom Jones (or John Smith) and the mapping between Symphony username
 and app username will be remembered until the app server is rebooted.
