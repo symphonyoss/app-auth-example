@@ -53,14 +53,19 @@ public class SymphonyClientFactory {
     public AuthenticationClient getAuthenticationClient(String companyId) {
         // Gets pod info from PodDirectory. This will throw IllegalStateException if no pod info is available for pod ID
         PodInfo podInfo = podDirectory.getPodInfo(companyId);
+
         final String podHost = podInfo.getPayload().getPodUrl();
+
+        // BUG - in 1.53.2, the PodInfo object doesn't contain the pod's base URL.  podUrl is <baseurl>/pod, so we can
+        // derive baseUrl from podUrl.
+        final String baseUrl = podHost.substring(0, podHost.indexOf("/pod"));
 
         // Return existing (or create, cache and return new instance)
         return clients.computeIfAbsent(companyId, k -> Feign.builder()
                 .encoder(new JacksonEncoder())
                 .decoder(new JacksonDecoder())
                 .client(okHttpClient)
-                .target(AuthenticationClient.class, podHost));
+                .target(AuthenticationClient.class, baseUrl));
     }
 
 }
