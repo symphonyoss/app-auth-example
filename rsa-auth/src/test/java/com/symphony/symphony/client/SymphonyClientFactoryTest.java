@@ -53,7 +53,7 @@ public class SymphonyClientFactoryTest {
         podInfo.setCompanyId("company-id");
         PodInfo.PodInfoPayload payload = new PodInfo.PodInfoPayload();
         podInfo.setPayload(payload);
-        payload.setPodUrl("pod-url");
+        payload.setPodUrl("pod-url/pod");
         payload.setSessionAuthUrl("sessionauth-url");
         when(podDirectory.getPodInfo("company-id")).thenReturn(podInfo);
 
@@ -61,7 +61,7 @@ public class SymphonyClientFactoryTest {
         PodInfo.PodInfoPayload anotherPayload = new PodInfo.PodInfoPayload();
         anotherPodInfo.setPayload(anotherPayload);
         anotherPodInfo.setCompanyId("another-company-id");
-        anotherPayload.setPodUrl("another-pod-url");
+        anotherPayload.setPodUrl("another-pod-url/pod");
         anotherPayload.setSessionAuthUrl("another-sessionauth-url");
         when(podDirectory.getPodInfo("another-company-id")).thenReturn(anotherPodInfo);
 
