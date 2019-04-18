@@ -84,28 +84,28 @@ public class SecurityKeyUtilsTest {
     public void testParseRSAPublicKeyPKCS8() throws Exception {
         PublicKey key = SecurityKeyUtils.parseRSAPublicKey(PKCS8_PUBLIC_KEY);
         assertNotNull(key);
-        assertNotNull(key.getAlgorithm(), "RSA");
+        assertEquals("RSA", key.getAlgorithm());
     }
 
     @Test
     public void testParseRSAPrivateKeyPKCS8() throws Exception {
         PrivateKey key = SecurityKeyUtils.parseRSAPrivateKey(PKCS8_PRIVATE_KEY);
         assertNotNull(key);
-        assertNotNull(key.getAlgorithm(), "RSA");
+        assertEquals("RSA", key.getAlgorithm());
     }
 
     @Test
     public void testParseRSAPublicKeyPKCS1() throws Exception {
         PublicKey key = SecurityKeyUtils.parseRSAPublicKey(PKCS1_PUBLIC_KEY);
         assertNotNull(key);
-        assertNotNull(key.getAlgorithm(), "RSA");
+        assertEquals("RSA", key.getAlgorithm());
     }
 
     @Test
     public void testParseRSAPrivateKeyPKCS1() throws Exception {
         PrivateKey key = SecurityKeyUtils.parseRSAPrivateKey(PKCS1_PRIVATE_KEY);
         assertNotNull(key);
-        assertNotNull(key.getAlgorithm(), "RSA");
+        assertEquals("RSA", key.getAlgorithm());
     }
 
     @Test(expected = GeneralSecurityException.class)
@@ -183,7 +183,7 @@ public class SecurityKeyUtilsTest {
 
         final X509Certificate certificate = SecurityKeyUtils.parseX509Certificate(cert);
         Key privKey = certificate.getPublicKey();
-        assertTrue(privKey != null);
+        assertNotNull(privKey);
         assertEquals("RSA", privKey.getAlgorithm());
     }
 

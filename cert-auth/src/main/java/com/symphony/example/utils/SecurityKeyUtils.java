@@ -13,14 +13,8 @@
 
 package com.symphony.example.utils;
 
-import org.bouncycastle.util.encoders.Base64;
-import sun.security.util.DerInputStream;
-import sun.security.util.DerValue;
-
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
@@ -30,8 +24,10 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
+
+import static org.apache.commons.codec.binary.Base64.decodeBase64;
 
 /**
  * Utility class for creating Java security objects from PEM strings.
@@ -55,57 +51,25 @@ public class SecurityKeyUtils {
    * @param pemPrivateKey RSA private key in PEM format
    * @return private key object
    */
-  public static PrivateKey parseRSAPrivateKey(final String pemPrivateKey)
+  public static PrivateKey parseRSAPrivateKey(String pemPrivateKey)
       throws GeneralSecurityException {
-    try {
-      if (pemPrivateKey.contains(PEM_PRIVATE_START)) { // PKCS#8 format
-        String privateKeyString = pemPrivateKey
-            .replace(PEM_PRIVATE_START, "")
-            .replace(PEM_PRIVATE_END, "")
-            .replaceAll("\\s", "");
-        byte[] keyBytes = Base64.decode(privateKeyString.getBytes("UTF-8"));
-        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
-        KeyFactory fact = KeyFactory.getInstance("RSA");
-        return fact.generatePrivate(keySpec);
 
-      } else if (pemPrivateKey.contains(PEM_RSA_PRIVATE_START)) {  // PKCS#1 format
-        String privateKeyString = pemPrivateKey
-            .replace(PEM_RSA_PRIVATE_START, "")
-            .replace(PEM_RSA_PRIVATE_END, "")
-            .replaceAll("\\s", "");
-
-        DerInputStream derReader = new DerInputStream(Base64.decode(privateKeyString));
-
-        DerValue[] seq = derReader.getSequence(0);
-
-        if (seq.length < 9) {
-          throw new GeneralSecurityException("Could not parse a PKCS1 private key.");
-        }
-
-        // skip version seq[0];
-        BigInteger modulus = seq[1].getBigInteger();
-        BigInteger publicExp = seq[2].getBigInteger();
-        BigInteger privateExp = seq[3].getBigInteger();
-        BigInteger prime1 = seq[4].getBigInteger();
-        BigInteger prime2 = seq[5].getBigInteger();
-        BigInteger exp1 = seq[6].getBigInteger();
-        BigInteger exp2 = seq[7].getBigInteger();
-        BigInteger crtCoef = seq[8].getBigInteger();
-
-        RSAPrivateCrtKeySpec keySpec =
-            new RSAPrivateCrtKeySpec(modulus, publicExp, privateExp, prime1, prime2, exp1, exp2,
-                crtCoef);
-
-        KeyFactory factory = KeyFactory.getInstance("RSA");
-
-        return factory.generatePrivate(keySpec);
-      }
-      throw new GeneralSecurityException("Not valid private key.");
-
-    } catch (InvalidKeySpecException | NoSuchAlgorithmException | IOException e) {
-      throw new GeneralSecurityException(e);
+    if (pemPrivateKey.contains(PEM_RSA_PRIVATE_START)) {
+      // OpenSSL / PKCS#1 Base64 PEM encoded file
+      pemPrivateKey = pemPrivateKey.replace(PEM_RSA_PRIVATE_START, "");
+      pemPrivateKey = pemPrivateKey.replace(PEM_RSA_PRIVATE_END, "");
+      return readPkcs1PrivateKey(decodeBase64(pemPrivateKey));
     }
-  }
+
+    if (pemPrivateKey.contains(PEM_PRIVATE_START)) {
+      // PKCS#8 Base64 PEM encoded file
+      pemPrivateKey = pemPrivateKey.replace(PEM_PRIVATE_START, "");
+      pemPrivateKey = pemPrivateKey.replace(PEM_PRIVATE_END, "");
+      return readPkcs8PrivateKey(decodeBase64(pemPrivateKey));
+    }
+
+    throw new GeneralSecurityException("Not valid private key.");
+ }
 
   /**
    * Parse an X509 Cert from a PEM string
@@ -115,16 +79,10 @@ public class SecurityKeyUtils {
    */
   public static X509Certificate parseX509Certificate(final String certificateString)
       throws GeneralSecurityException {
-    try {
-      CertificateFactory f = CertificateFactory.getInstance("X.509");
-      X509Certificate certificate = (X509Certificate)f.generateCertificate(new ByteArrayInputStream(certificateString.getBytes("UTF-8")));
-      return certificate;
-
-    } catch (UnsupportedEncodingException e) {
-      throw new GeneralSecurityException(e);
-    }
+    CertificateFactory f = CertificateFactory.getInstance("X.509");
+    X509Certificate certificate = (X509Certificate)f.generateCertificate(new ByteArrayInputStream(certificateString.getBytes(StandardCharsets.UTF_8)));
+    return certificate;
   }
-
 
 
   /**
@@ -140,14 +98,45 @@ public class SecurityKeyUtils {
               .replace(PEM_PUBLIC_START, "")
               .replace(PEM_PUBLIC_END, "")
               .replaceAll("\\s", "");
-      byte[] keyBytes = Base64.decode(publicKeyString.getBytes("UTF-8"));
+      byte[] keyBytes = decodeBase64(publicKeyString.getBytes(StandardCharsets.UTF_8));
       X509EncodedKeySpec spec = new X509EncodedKeySpec(keyBytes);
       KeyFactory keyFactory = KeyFactory.getInstance("RSA");
       return keyFactory.generatePublic(spec);
 
-    } catch (InvalidKeySpecException | NoSuchAlgorithmException | UnsupportedEncodingException e) {
+    } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
       throw new GeneralSecurityException(e);
     }
   }
 
+
+  private static PrivateKey readPkcs8PrivateKey(byte[] pkcs8Bytes) throws GeneralSecurityException {
+    KeyFactory keyFactory = KeyFactory.getInstance("RSA", "SunRsaSign");
+    PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(pkcs8Bytes);
+    try {
+      return keyFactory.generatePrivate(keySpec);
+    } catch (InvalidKeySpecException e) {
+      throw new IllegalArgumentException("Unexpected key format!", e);
+    }
+  }
+
+  private static PrivateKey readPkcs1PrivateKey(byte[] pkcs1Bytes) throws GeneralSecurityException {
+    // We can't use Java internal APIs to parse ASN.1 structures, so we build a PKCS#8 key Java can understand
+    int pkcs1Length = pkcs1Bytes.length;
+    int totalLength = pkcs1Length + 22;
+    byte[] pkcs8Header = new byte[] {
+            0x30, (byte) 0x82, (byte) ((totalLength >> 8) & 0xff), (byte) (totalLength & 0xff), // Sequence + total length
+            0x2, 0x1, 0x0, // Integer (0)
+            0x30, 0xD, 0x6, 0x9, 0x2A, (byte) 0x86, 0x48, (byte) 0x86, (byte) 0xF7, 0xD, 0x1, 0x1, 0x1, 0x5, 0x0, // Sequence: 1.2.840.113549.1.1.1, NULL
+            0x4, (byte) 0x82, (byte) ((pkcs1Length >> 8) & 0xff), (byte) (pkcs1Length & 0xff) // Octet string + length
+    };
+    byte[] pkcs8bytes = join(pkcs8Header, pkcs1Bytes);
+    return readPkcs8PrivateKey(pkcs8bytes);
+  }
+
+  private static byte[] join(byte[] byteArray1, byte[] byteArray2){
+    byte[] bytes = new byte[byteArray1.length + byteArray2.length];
+    System.arraycopy(byteArray1, 0, bytes, 0, byteArray1.length);
+    System.arraycopy(byteArray2, 0, bytes, byteArray1.length, byteArray2.length);
+    return bytes;
+  }
 }
